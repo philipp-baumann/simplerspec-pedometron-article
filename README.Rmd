@@ -1,0 +1,15 @@
+---
+title: "Article"
+author: "Philipp Baumann"
+date: "2019-12-01"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Albert Einstein would probably see the necessity for simplerspec, as he follows his quote "Everything should be made as simple as possible, but not simpler". 
+
