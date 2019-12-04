@@ -9,6 +9,20 @@ Albert Einstein would probably not feel the necessity for simplerspec,
 as he follows his quote “Everything should be made as simple as
 possible, but not simpler”.
 
+# Prepare the R environment
+
+To reproduce the analysis in this hands-on, I would advise two main
+options:
+
+1.  Manual installation of R packages
+2.  Installing exact package versions and sources using the renv package
+    and the snapshot file `renv.lock`
+
+## Manual installation
+
+To install and attach all required R packages used in this article, you
+can run the following lines:
+
 ``` r
 pkgs <- c("here", "simplerspec", "tidyverse", "data.table")
 new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
@@ -19,34 +33,16 @@ if (length(new_pkgs)) {
     remotes::install_github("philipp-baumann/simplerspec")}
   install.packages(new_pkgs)
 }
-purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
+suppressPackageStartupMessages(
+  purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
+)
 ```
 
-    ## here() starts at /media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article
+## Restore the project with renv
 
-    ## ── Attaching packages ────────
-
-    ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.3
-    ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
-    ## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
-    ## ✔ readr   1.3.1     ✔ forcats 0.4.0
-
-    ## ── Conflicts ─────────────────
-    ## ✖ purrr::accumulate() masks foreach::accumulate()
-    ## ✖ dplyr::filter()     masks stats::filter()
-    ## ✖ dplyr::lag()        masks stats::lag()
-    ## ✖ purrr::when()       masks foreach::when()
-
-    ## 
-    ## Attaching package: 'data.table'
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     between, first, last
-
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     transpose
+First, clone this repository to your local computer. Then install renv
+and restore R packages based on the `renv.lock`
+    file.
 
 # Outro
 
@@ -233,6 +229,6 @@ devtools::session_info()
     ##  CRAN (R 3.6.0)                              
     ## 
     ## [1] /media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/renv/library/R-3.6/x86_64-pc-linux-gnu
-    ## [2] /tmp/RtmpiktufI/renv-system-library
+    ## [2] /tmp/Rtmpln72lI/renv-system-library
     ## 
     ##  P ── Loaded and on-disk path mismatch.

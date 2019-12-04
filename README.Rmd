@@ -13,6 +13,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Albert Einstein would probably not feel the necessity for simplerspec, as he follows his quote "Everything should be made as simple as possible, but not simpler".
 
+# Prepare the R environment
+
+To reproduce the analysis in this hands-on, I would advise two main options:
+
+1. Manual installation of R packages
+2. Installing exact package versions and sources using the renv package and the snapshot file `renv.lock`
+
+## Manual installation
+
+To install and attach all required R packages used in this article, you can run the following  lines:
+
 ```{r}
 pkgs <- c("here", "simplerspec", "tidyverse", "data.table")
 new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
@@ -23,9 +34,14 @@ if (length(new_pkgs)) {
     remotes::install_github("philipp-baumann/simplerspec")}
   install.packages(new_pkgs)
 }
-purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
+suppressPackageStartupMessages(
+  purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
+)
 ```
 
+## Restore the project with renv
+
+First, clone this repository to your local computer. Then install renv and restore R packages based on the `renv.lock` file.
 
 # Outro
 
