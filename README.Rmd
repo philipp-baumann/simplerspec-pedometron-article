@@ -13,5 +13,24 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Albert Einstein would probably not feel the necessity for simplerspec, as he follows his quote "Everything should be made as simple as possible, but not simpler".
 
+```{r}
+pkgs <- c("here", "simplerspec", "tidyverse", "data.table")
+new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
+# Install only new packages
+if (length(new_pkgs)) {
+  if ("remotes" %in% new_pkgs) install.packages("remotes")
+  if ("simplerspec" %in% new_pkgs) {
+    devtools::install_github("philipp-baumann/simplerspec")}
+  install.packages(new_pkgs)
+}
+purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
+```
+
+
 # Outro
+
+```{r}
+devtools::session_info()
+```
+
 
