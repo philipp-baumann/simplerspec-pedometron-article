@@ -16,7 +16,7 @@ new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs)) {
   if ("remotes" %in% new_pkgs) install.packages("remotes")
   if ("simplerspec" %in% new_pkgs) {
-    devtools::install_github("philipp-baumann/simplerspec")}
+    remotes::install_github("philipp-baumann/simplerspec")}
   install.packages(new_pkgs)
 }
 purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
@@ -233,6 +233,6 @@ devtools::session_info()
     ##  CRAN (R 3.6.0)                              
     ## 
     ## [1] /media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/renv/library/R-3.6/x86_64-pc-linux-gnu
-    ## [2] /tmp/Rtmpegp6ER/renv-system-library
+    ## [2] /tmp/RtmpiktufI/renv-system-library
     ## 
     ##  P ── Loaded and on-disk path mismatch.

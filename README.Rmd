@@ -20,7 +20,7 @@ new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs)) {
   if ("remotes" %in% new_pkgs) install.packages("remotes")
   if ("simplerspec" %in% new_pkgs) {
-    devtools::install_github("philipp-baumann/simplerspec")}
+    remotes::install_github("philipp-baumann/simplerspec")}
   install.packages(new_pkgs)
 }
 purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
