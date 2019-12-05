@@ -93,6 +93,13 @@
       "Repository": "CRAN",
       "Hash": "908d95ccbfd1dd274073ef07a7c93934"
     },
+    "purrr": {
+      "Package": "purrr",
+      "Version": "0.3.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b174d35f8cfb40b0c0b66d2bb0bc4224"
+    },
     "renv": {
       "Package": "renv",
       "Version": "0.7.0-111",
@@ -104,6 +111,13 @@
       "RemoteRef": "0.7.0-111",
       "RemoteSha": "1e4ed65b50050d36d559068bbc8678d5cc5eda34",
       "Hash": "ac1651d05df95351d3918bd15c14c673"
+    },
+    "rlang": {
+      "Package": "rlang",
+      "Version": "0.4.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d963fc6d77b53554f438d82ef8cbea62"
     },
     "rmarkdown": {
       "Package": "rmarkdown",
