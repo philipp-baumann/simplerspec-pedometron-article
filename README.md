@@ -14,7 +14,7 @@ possible, but not simpler”.
 To reproduce the analysis in this hands-on, I would advise two main
 options:
 
-1.  Manual installation of R packages
+1.  Manual installation of R packages with specific version tags
 2.  Installing exact package versions and sources using the renv package
     and the snapshot file `renv.lock`
 
@@ -233,6 +233,6 @@ devtools::session_info()
     ##  CRAN (R 3.6.0)                              
     ## 
     ## [1] /media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/renv/library/R-3.6/x86_64-pc-linux-gnu
-    ## [2] /tmp/RtmpJTNXSZ/renv-system-library
+    ## [2] /tmp/RtmpIMgppH/renv-system-library
     ## 
     ##  P ── Loaded and on-disk path mismatch.
