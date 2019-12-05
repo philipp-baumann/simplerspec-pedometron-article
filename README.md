@@ -41,8 +41,12 @@ suppressPackageStartupMessages(
 ## Restore the project with renv
 
 First, clone this repository to your local computer. Then install renv
-and restore R packages based on the `renv.lock`
-    file.
+and restore R packages based on the `renv.lock` file.
+
+``` r
+install.packages("renv")
+renv::restore("renv.lock")
+```
 
 # Outro
 
@@ -60,7 +64,7 @@ devtools::session_info()
     ##  collate  en_US.UTF-8                 
     ##  ctype    en_US.UTF-8                 
     ##  tz       Europe/Zurich               
-    ##  date     2019-12-04                  
+    ##  date     2019-12-05                  
     ## 
     ## ─ Packages ──────────────────────────────────────────────────────────────
     ##  ! package     * version   date       lib
@@ -229,6 +233,6 @@ devtools::session_info()
     ##  CRAN (R 3.6.0)                              
     ## 
     ## [1] /media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/renv/library/R-3.6/x86_64-pc-linux-gnu
-    ## [2] /tmp/Rtmpln72lI/renv-system-library
+    ## [2] /tmp/RtmpJTNXSZ/renv-system-library
     ## 
     ##  P ── Loaded and on-disk path mismatch.

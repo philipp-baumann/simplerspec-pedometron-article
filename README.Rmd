@@ -43,6 +43,12 @@ suppressPackageStartupMessages(
 
 First, clone this repository to your local computer. Then install renv and restore R packages based on the `renv.lock` file.
 
+```{r, eval=FALSE}
+install.packages("renv")
+renv::restore("renv.lock")
+```
+
+
 # Outro
 
 ```{r}
