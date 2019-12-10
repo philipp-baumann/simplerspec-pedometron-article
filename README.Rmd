@@ -11,20 +11,23 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Intro
 
-Albert Einstein would probably not feel the necessity for simplerspec, as he follows his quote "Everything should be made as simple as possible, but not simpler".
+Albert Einstein would probably not have felt the necessity for simplerspec, as he would have followed his quote *"Everything should be made as simple as possible, but not simpler"*. In line with this recommendation, I was told that spectral analysis in R is standard practice and straight forward using the famous partial least squares (PLS) regression when I started my MSc in back in July 2015. I was given the honour of  the exiting task to sample and model both soils and yam plants from 20 fields at 4 landscapes across the West African yam belt. Since I was both fascinated by R, statistics, soils, and their interplay with plants, I started my first scientific journey with the premise that I just had to deepen a bit my R knowledge. I thought that the tools out there are simple enough for achieving my neat MSc task.
 
-# Prepare the R environment
+Being a big fan of R and other open source tools, I was happy to find quite a bit of chemometrics and other modeling toolsets, many of them for example available via [CRAN](https://cran.r-project.org/) and listed in the CRAN Task View [Chemometrics and Computational Physics](https://cran.r-project.org/web/views/ChemPhys.html). I would opinionately consider most of them good at solving single tasks, but I somehow missed a clean common interface that interlinked the key steps required for spectral processing and modeling. While doing first analysis steps, my intuition told me that streamlining all analysis steps would be aiding in more efficiently estimating the composition and properties of natural materials. And more importantly, I would allow a sustainable basis for model development and sharing with collaborators.
 
-To reproduce the analysis in this hands-on, I would advise two main options:
+However, I was far from being there (now still). Soon I realized that while extending explorations of various options along modeling steps, such as pre-processing to achieve robust and accurate models, I ended up writing more and more verbose code for repetitive or only slighly different tasks. I felt I could do better at some point and get rid of the verbose boilerplate coding I was doing. To solve this more elegantly, I started continously building the simplerspec package with the goal of delivering beginner-friendly and standardized functions. In short, to provide a rapid prototyping pipeline for various spectroscopy applications that share common tasks.
+
+# Prepare the R environment for spectral analyses
+
+To reproduce the entire analysis in this hands-on, I would advise two main options:
 
 1. Manual installation of R packages with specific version tags
 2. Installing exact package versions and sources using the renv package and the snapshot file `renv.lock`
 
-## Manual installation
-
 To install and attach all required R packages used in this article, you can run the following  lines:
 
 ```{r}
+## Option 1 for installation
 pkgs <- c("here", "simplerspec", "tidyverse", "data.table")
 new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
 # Install only new packages
@@ -34,20 +37,45 @@ if (length(new_pkgs)) {
     remotes::install_github("philipp-baumann/simplerspec")}
   install.packages(new_pkgs)
 }
+```
+
+To restore and reproduce this entire analysis and document, first clone this repository to your local computer. Then install renv and restore R packages based on the `renv.lock` file.
+
+```{r, eval=FALSE}
+## Option 2 for installation
+install.packages("renv")
+renv::restore("renv.lock")
+```
+
+Option 2 is probably the easiest as it makes sure that all dependencies are met and the computational environment is the same.
+
+# Hands-on
+
+Now we are ready to proceed to the fundamentals of the package.
+
+```{r}
+# Load required packages
 suppressPackageStartupMessages(
   purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
 )
 ```
 
-## Restore the project with renv
 
-First, clone this repository to your local computer. Then install renv and restore R packages based on the `renv.lock` file.
+A typical simple spectroscopy modeling project has the following components:
 
-```{r, eval=FALSE}
-install.packages("renv")
-renv::restore("renv.lock")
-```
+1. Soil sampling
+2. Sample preparation
+3. Spectral measurements
+4. Selection of calibration samples
+5. Soil analytical reference analyses
+6. 
+    a. Calibration or Recalibration
 
+Simplerspec focuses on the key tasks and provides user-friendly modules in the form of a standardized function pipeline. This pipeline builds upon common design principles of spectral R objects which are shared between function inputs and outputs.
+
+First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior the standard chemical analysis. This is useful when 
+
+The spectral pre-processing pipeline is what is abstracted in these basic steps that are commonly done.
 
 # Outro
 
