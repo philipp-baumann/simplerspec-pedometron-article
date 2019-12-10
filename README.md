@@ -45,17 +45,31 @@ applications that share common tasks.
 # Prepare the R environment for spectral analyses
 
 To reproduce the entire analysis in this hands-on, I would advise two
-main options:
+main procedures:
 
-1.  Manual installation of R packages with specific version tags
-2.  Installing exact package versions and sources using the renv package
+1.  Installing exact package versions and sources using the renv package
     and the snapshot file `renv.lock`
+2.  Manual installation of R packages with specific version tags
 
-To install and attach all required R packages used in this article, you
-can run the following lines:
+To restore and reproduce this entire analysis and document, first clone
+this repository to your local computer. Then install renv and restore R
+packages based on the `renv.lock` file in an isolated project library in
+two lines of code.
 
 ``` r
 ## Option 1 for installation
+install.packages("renv")
+renv::restore("renv.lock")
+```
+
+Option 1 is probably the easiest as it makes automatically sure that all
+dependencies are met and the computational environment is the same.
+
+To install and attach all required R packages used in this article with
+more manual care and less guarantees, you can run the following lines:
+
+``` r
+## Option 2 for installation
 pkgs <- c("here", "simplerspec", "tidyverse", "data.table")
 new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
 # Install only new packages
@@ -67,25 +81,13 @@ if (length(new_pkgs)) {
 }
 ```
 
-To restore and reproduce this entire analysis and document, first clone
-this repository to your local computer. Then install renv and restore R
-packages based on the `renv.lock` file.
-
-``` r
-## Option 2 for installation
-install.packages("renv")
-renv::restore("renv.lock")
-```
-
-Option 2 is probably the easiest as it makes sure that all dependencies
-are met and the computational environment is the same.
-
 # Hands-on
 
 Now we are ready to proceed to the fundamentals of the package.
 
 ``` r
 # Load required packages
+# `walk()` is like `lapply()`, but returns invisibly
 suppressPackageStartupMessages(
   purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
 )
@@ -305,6 +307,6 @@ devtools::session_info()
     ##  CRAN (R 3.6.0)                              
     ## 
     ## [1] /media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/renv/library/R-3.6/x86_64-pc-linux-gnu
-    ## [2] /tmp/RtmpmdhlK8/renv-system-library
+    ## [2] /tmp/Rtmpo0XzkY/renv-system-library
     ## 
     ##  P ── Loaded and on-disk path mismatch.
