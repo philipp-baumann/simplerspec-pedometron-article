@@ -10,13 +10,14 @@ simplerspec, as he would have followed his quote *“Everything should be
 made as simple as possible, but not simpler”*. In line with this
 recommendation, I was told that spectral analysis in R is standard
 practice and straight forward using the famous partial least squares
-(PLS) regression when I started my MSc in back in July 2015. I was given
+(PLS) regression when I started my MSc back in July 2015. I was given
 the honour of the exiting task to sample and model both soils and yam
-plants from 20 fields at 4 landscapes across the West African yam belt.
-Since I was both fascinated by R, statistics, soils, and their interplay
-with plants, I started my first scientific journey with the premise that
-I just had to deepen a bit my R knowledge. I thought that the tools out
-there are simple enough for achieving my neat MSc task.
+plants from 20 fields at 4 landscapes across the West African yam belt
+(see [here](www.yamsys.org) for details). Since I was both fascinated by
+R, statistics, soils, and their interplay with plants, I started my
+first scientific journey with the premise that I just had to deepen a
+bit my R knowledge. I thought that the tools out there are simple enough
+for achieving my neat MSc task.
 
 Being a big fan of R and other open source tools, I was happy to find
 quite a bit of chemometrics and other modeling toolsets, many of them
@@ -42,7 +43,7 @@ the goal of delivering beginner-friendly and standardized functions. In
 short, to provide a rapid prototyping pipeline for various spectroscopy
 applications that share common tasks.
 
-# Prepare the R environment for spectral analyses
+# Prepare the R environment for spectral analysis
 
 To reproduce the entire analysis in this hands-on, I would advise two
 main procedures:
@@ -138,7 +139,7 @@ devtools::session_info()
     ##  collate  en_US.UTF-8                 
     ##  ctype    en_US.UTF-8                 
     ##  tz       Europe/Zurich               
-    ##  date     2019-12-10                  
+    ##  date     2019-12-11                  
     ## 
     ## ─ Packages ──────────────────────────────────────────────────────────────
     ##  ! package     * version   date       lib
@@ -307,6 +308,6 @@ devtools::session_info()
     ##  CRAN (R 3.6.0)                              
     ## 
     ## [1] /media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/renv/library/R-3.6/x86_64-pc-linux-gnu
-    ## [2] /tmp/Rtmpo0XzkY/renv-system-library
+    ## [2] /tmp/RtmpXUllGa/renv-system-library
     ## 
     ##  P ── Loaded and on-disk path mismatch.
