@@ -312,37 +312,42 @@ develop a partial least squares (PLS) calibration model.
 
 ``` r
 # Fuse spectra and reference data
-(spc_refdata <- 
+spc_refdata <- 
   dplyr::inner_join(
     x = spc_proc,
     y = reference_data %>% rename(sample_id = sample_ID)
-  ))
+  )
 ```
 
     ## Joining, by = "sample_id"
 
-    ## # A tibble: 284 x 46
-    ##    unique_id file_id sample_id metadata spc   wavenumbers spc_rs
-    ##    <chr>     <chr>   <chr>     <list>   <lis> <list>      <list>
-    ##  1 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  2 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  3 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  4 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  5 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  6 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  7 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  8 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  9 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
-    ## 10 BF_lo_04… BF_lo_… BF_lo_04… <tibble… <df[… <dbl [1,71… <df[,…
-    ## # … with 274 more rows, and 39 more variables: wavenumbers_rs <list>,
-    ## #   spc_mean <list>, spc_pre <list>, xvalues_pre <list>, country <chr>,
-    ## #   site <chr>, material <chr>, S <dbl>, C <dbl>, N <dbl>, ex_Ca <dbl>,
-    ## #   ex_Mg <dbl>, ex_K <dbl>, ex_Al <dbl>, ex_Na <dbl>, ex_Fe <dbl>,
-    ## #   ex_Mn <dbl>, pH_BaCl2 <dbl>, CEC_eff <dbl>, BS_eff <dbl>, pH <dbl>,
-    ## #   P_resin <dbl>, Fe_tot <dbl>, Si_tot <dbl>, Al_tot <dbl>, P_tot <dbl>,
-    ## #   K_tot <dbl>, Ca_tot <dbl>, Mn_tot <dbl>, Zn_tot <dbl>, Cu_tot <dbl>,
-    ## #   Zn_DTPA <dbl>, Cu_DTPA <dbl>, Fe_DTPA <dbl>, Mn_DTPA <dbl>,
-    ## #   sand <dbl>, clay <dbl>, silt <dbl>, site_comb <chr>
+``` r
+spc_refdata %>%
+  skimr::skim(starts_with("spc"))
+```
+
+|                                                  |            |
+| :----------------------------------------------- | :--------- |
+| Name                                             | Piped data |
+| Number of rows                                   | 284        |
+| Number of columns                                | 46         |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |            |
+| Column type frequency:                           |            |
+| list                                             | 4          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |            |
+| Group variables                                  | None       |
+
+Data summary
+
+**Variable type:
+list**
+
+| skim\_variable | n\_missing | complete\_rate | n\_unique | min\_length | max\_length |
+| :------------- | ---------: | -------------: | --------: | ----------: | ----------: |
+| spc            |          0 |              1 |       284 |        1716 |        1716 |
+| spc\_rs        |          0 |              1 |       284 |         749 |         749 |
+| spc\_mean      |          0 |              1 |        94 |         749 |         749 |
+| spc\_pre       |          0 |              1 |        94 |         729 |         729 |
 
 ``` r
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
@@ -350,14 +355,6 @@ pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
 ```
 
     ## Adding missing grouping variables: `sample_id`
-
-    ## Warning in min(x): no non-missing arguments to min; returning Inf
-
-    ## Warning in max(x): no non-missing arguments to max; returning -Inf
-
-    ## Warning in min(x): no non-missing arguments to min; returning Inf
-
-    ## Warning in max(x): no non-missing arguments to max; returning -Inf
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 

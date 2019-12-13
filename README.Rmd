@@ -7,7 +7,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
 ```
 
 # Intro
@@ -177,11 +177,13 @@ Lastly, we develop a partial least squares (PLS) calibration model.
 
 ```{r}
 # Fuse spectra and reference data
-(spc_refdata <- 
+spc_refdata <- 
   dplyr::inner_join(
     x = spc_proc,
     y = reference_data %>% rename(sample_id = sample_ID)
-  ))
+  )
+spc_refdata %>%
+  skimr::skim(starts_with("spc"))
 ```
 
 ```{r}
