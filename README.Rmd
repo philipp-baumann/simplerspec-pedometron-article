@@ -40,7 +40,7 @@ To install and attach all required R packages used in this article with more man
 
 ```{r}
 ## Option 2 for installation
-pkgs <- c("here", "simplerspec", "tidyverse", "data.table",
+pkgs <- c("simplerspec", "here", "tidyverse", "data.table",
   "future", "doFuture")
 new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
 # Install only new packages
@@ -54,7 +54,7 @@ if (length(new_pkgs)) {
 
 # Hands-on
 
-Now we are ready to proceed to the fundamentals of the package. First, let's load required packages. The tidyverse is optional, so if you feel it is not required you won't need to load it.
+Now we are ready to proceed to the fundamentals of the package. We use the example data set from my MSc thesis. First, let's load required packages. The tidyverse is optional, so if you feel it is not required you won't need to load it.
 
 ```{r}
 # Load required packages
@@ -85,7 +85,7 @@ Simplerspec focuses on the key tasks and provides user-friendly modules in the f
 
 First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior to the standard chemical analysis. This is useful when you have a lot of samples and you want to save some time and money to to do reference analysis, and then predict the remaining samples only with infrared spectroscopy.
 
-Here we read from a Bruker Alpha mid-Infrared spectrometer:
+Here we read from a Bruker Alpha mid-Infrared spectrometer. Currently, the package is limited to Bruker and ASD devices, however support for reading files from other devices and formats is planned within the package simplerspec.io.
 
 ```{r}
 plan(multisession)
@@ -126,7 +126,7 @@ class(spc_dt)
 
 Let's plot what we have first:
 
-```{r}
+```{r, out.width = 3.5}
 spc_tbl %>%
   mutate(
     label_all = "All spectra"
@@ -145,7 +145,7 @@ The spectral pre-processing pipeline is what is abstracted in these basic steps 
 
 Resampling in this contexts refers to to creating a new a axis interval in spectra. 
 
-In a nutshell, preprocessing can be done in one pipeline.
+In a nutshell, spectral data processing can be done in one pipeline.
 
 ```{r}
 (spc_proc <- 
@@ -159,14 +159,15 @@ We can explore the final processed spectra.
 
 ```{r}
 spc_proc %>%
-  mutate(
-    label_proc = "Preprocessed spectra"
+  inner_join(
+    x = .,
+    y = reference_data %>% rename(sample_id = sample_ID)
   ) %>%
   plot_spc_ext(
     spc_tbl = .,
-    lcols_spc = c("spc_pre"),
-    group_id = "label_proc",
-    ylab = "Preprocessed Absorbance")
+    lcols_spc = c("spc", "spc_pre"),
+    lcol_measure = "C",
+    group_id = "site")
 ```
 
 After preprocessing, we can proceed with selecting reference analytical samples based on Kennard-Stone.
@@ -175,8 +176,6 @@ After preprocessing, we can proceed with selecting reference analytical samples 
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 # PCA biplot
 spc_tbl_selection$p_pca
-spc_tbl_selection$spc_ref
-spc_tbl_selection$spc_pred
 ```
 Lastly, we develop a partial least squares (PLS) calibration model. 
 
@@ -193,10 +192,11 @@ Lastly, we develop a partial least squares (PLS) calibration model.
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
   evaluation_method = "resampling")
 pls_carbon$p_model +
-  xlab(expression(paste("Measured C [g]", ~kg^-1)))
+  xlab(expression(paste("Measured C [g", ~kg^-1))) +
+  ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
 
 # Outro
 
-Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would also be fantastic to co-develop a new set of programs that automatically tune spectral machine learning pipelines. For example, one could create a custom graph learner using mlr3 and a preprocessing wrapper targeted to spectral analysis. If you have ideas, just send me an email or interact via github. Last but not least, I would like to give a big thanks to my generous supervisor for providing me infinite freedom in my science bubble. A big thank goes also to my main advisor and many more part and full-time advisors. Working without constraints and waking up everyday with thinking "alright --- what am I going to do today?" feels amazing.
+Simplerspec are some first baby steps in spectral adventures. The package deals with simplifying standard tasks and now has mainly exploration and teaching purposes. As an example, the [Congo spectral platform](https://sae-interactive-data.ethz.ch/simplerspec.drc/) uses some of its functionality. It would be great to further develop streamlining packages which are good at doing single things. It would also be fantastic to co-develop a new set of programs that automatically tune spectral machine learning pipelines. For example, one could create a custom graph learner using mlr3 and a preprocessing wrapper targeted to spectral analysis, in connection with a proper database system. If you have ideas, just send me an email or interact via github. Last but not least, I would like to give a big thanks to my generous supervisor for providing me infinite freedom in my science bubble. A big thank goes also to my main advisor and many more part and full-time advisors in my PhD committee. Working without constraints and waking up every day with thinking "alright --- what am I going to do today?" feels amazing.

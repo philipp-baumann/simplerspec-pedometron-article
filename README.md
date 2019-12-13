@@ -73,7 +73,7 @@ more manual care and less guarantees, you can run the following lines:
 
 ``` r
 ## Option 2 for installation
-pkgs <- c("here", "simplerspec", "tidyverse", "data.table",
+pkgs <- c("simplerspec", "here", "tidyverse", "data.table",
   "future", "doFuture")
 new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
 # Install only new packages
@@ -87,9 +87,10 @@ if (length(new_pkgs)) {
 
 # Hands-on
 
-Now we are ready to proceed to the fundamentals of the package. First,
-let’s load required packages. The tidyverse is optional, so if you feel
-it is not required you won’t need to load it.
+Now we are ready to proceed to the fundamentals of the package. We use
+the example data set from my MSc thesis. First, let’s load required
+packages. The tidyverse is optional, so if you feel it is not required
+you won’t need to load it.
 
 ``` r
 # Load required packages
@@ -153,7 +154,10 @@ useful when you have a lot of samples and you want to save some time and
 money to to do reference analysis, and then predict the remaining
 samples only with infrared spectroscopy.
 
-Here we read from a Bruker Alpha mid-Infrared spectrometer:
+Here we read from a Bruker Alpha mid-Infrared spectrometer. Currently,
+the package is limited to Bruker and ASD devices, however support for
+reading files from other devices and formats is planned within the
+package simplerspec.io.
 
 ``` r
 plan(multisession)
@@ -252,7 +256,7 @@ spc_tbl %>%
   )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+<img src="README_files/figure-gfm/unnamed-chunk-8-1.png" width="3.5" />
 
 The spectral pre-processing pipeline is what is abstracted in these
 basic steps that are commonly done. Simplerspec uses prospectr for key
@@ -262,7 +266,7 @@ summarizes the steps.
 Resampling in this contexts refers to to creating a new a axis interval
 in spectra.
 
-In a nutshell, preprocessing can be done in one pipeline.
+In a nutshell, spectral data processing can be done in one pipeline.
 
 ``` r
 (spc_proc <- 
@@ -292,15 +296,18 @@ We can explore the final processed spectra.
 
 ``` r
 spc_proc %>%
-  mutate(
-    label_proc = "Preprocessed spectra"
+  inner_join(
+    x = .,
+    y = reference_data %>% rename(sample_id = sample_ID)
   ) %>%
   plot_spc_ext(
     spc_tbl = .,
-    lcols_spc = c("spc_pre"),
-    group_id = "label_proc",
-    ylab = "Preprocessed Absorbance")
+    lcols_spc = c("spc", "spc_pre"),
+    lcol_measure = "C",
+    group_id = "site")
 ```
+
+    ## Joining, by = "sample_id"
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
@@ -313,51 +320,8 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
-``` r
-spc_tbl_selection$spc_ref
-```
-
-    ## # A tibble: 47 x 11
-    ## # Groups:   sample_id [47]
-    ##    unique_id file_id sample_id metadata spc   wavenumbers spc_rs
-    ##    <chr>     <chr>   <chr>     <list>   <lis> <list>      <list>
-    ##  1 CI_sb_YA… CI_sb_… CI_sb_YA… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  2 CI_sb_04… CI_sb_… CI_sb_04… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  3 BF_mo_06… BF_mo_… BF_mo_06… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  4 CI_tb_07… CI_tb_… CI_tb_07… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  5 CI_tb_04… CI_tb_… CI_tb_04… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  6 CI_tb_15… CI_tb_… CI_tb_15… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  7 CI_sb_YA… CI_sb_… CI_sb_YA… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  8 CI_sb_YA… CI_sb_… CI_sb_YA… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  9 CI_sb_01… CI_sb_… CI_sb_01… <tibble… <df[… <dbl [1,71… <df[,…
-    ## 10 BF_mo_04… BF_mo_… BF_mo_04… <tibble… <df[… <dbl [1,71… <df[,…
-    ## # … with 37 more rows, and 4 more variables: wavenumbers_rs <list>,
-    ## #   spc_mean <list>, spc_pre <list>, xvalues_pre <list>
-
-``` r
-spc_tbl_selection$spc_pred
-```
-
-    ## # A tibble: 47 x 11
-    ## # Groups:   sample_id [47]
-    ##    unique_id file_id sample_id metadata spc   wavenumbers spc_rs
-    ##    <chr>     <chr>   <chr>     <list>   <lis> <list>      <list>
-    ##  1 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  2 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  3 BF_lo_04… BF_lo_… BF_lo_04… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  4 BF_lo_05… BF_lo_… BF_lo_05… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  5 BF_lo_06… BF_lo_… BF_lo_06… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  6 BF_lo_07… BF_lo_… BF_lo_07… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  7 BF_lo_08… BF_lo_… BF_lo_08… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  8 BF_lo_10… BF_lo_… BF_lo_10… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  9 BF_lo_14… BF_lo_… BF_lo_14… <tibble… <df[… <dbl [1,71… <df[,…
-    ## 10 BF_lo_15… BF_lo_… BF_lo_15… <tibble… <df[… <dbl [1,71… <df[,…
-    ## # … with 37 more rows, and 4 more variables: wavenumbers_rs <list>,
-    ## #   spc_mean <list>, spc_pre <list>, xvalues_pre <list>
-
-Lastly, we develop a partial least squares (PLS) calibration model.
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- --> Lastly, we
+develop a partial least squares (PLS) calibration model.
 
 ``` r
 # Fuse spectra
@@ -412,22 +376,27 @@ pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
 
 ``` r
 pls_carbon$p_model +
-  xlab(expression(paste("Measured C [g]", ~kg^-1)))
+  xlab(expression(paste("Measured C [g", ~kg^-1))) +
+  ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
 
 # Outro
 
-Simplerspec are some first baby steps in spectral adventures. It would
-be great to further develop streamlining packages which are good at
-doing single things. It would also be fantastic to co-develop a new set
-of programs that automatically tune spectral machine learning pipelines.
-For example, one could create a custom graph learner using mlr3 and a
-preprocessing wrapper targeted to spectral analysis. If you have ideas,
-just send me an email or interact via github. Last but not least, I
-would like to give a big thanks to my generous supervisor for providing
-me infinite freedom in my science bubble. A big thank goes also to my
-main advisor and many more part and full-time advisors. Working without
-constraints and waking up everyday with thinking “alright — what am I
-going to do today?” feels amazing.
+Simplerspec are some first baby steps in spectral adventures. The
+package deals with simplifying standard tasks and now has mainly
+exploration and teaching purposes. As an example, the [Congo spectral
+platform](https://sae-interactive-data.ethz.ch/simplerspec.drc/) uses
+some of its functionality. It would be great to further develop
+streamlining packages which are good at doing single things. It would
+also be fantastic to co-develop a new set of programs that automatically
+tune spectral machine learning pipelines. For example, one could create
+a custom graph learner using mlr3 and a preprocessing wrapper targeted
+to spectral analysis, in connection with a proper database system. If
+you have ideas, just send me an email or interact via github. Last but
+not least, I would like to give a big thanks to my generous supervisor
+for providing me infinite freedom in my science bubble. A big thank goes
+also to my main advisor and many more part and full-time advisors in my
+PhD committee. Working without constraints and waking up every day with
+thinking “alright — what am I going to do today?” feels amazing.
