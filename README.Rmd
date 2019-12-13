@@ -13,13 +13,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Albert Einstein would probably not have felt the necessity for simplerspec, as he would have followed his quote *"Everything should be made as simple as possible, but not simpler"*. In line with this recommendation, I was told that spectral analysis in R is standard practice and straight forward using the famous partial least squares (PLS) regression when I started my MSc back in July 2015. I was given the honour of  the exiting task to sample and model both soils and yam plants from 20 fields at 4 landscapes across the West African yam belt (see [here](www.yamsys.org) for details). Since I was both fascinated by R, statistics, soils, and their interplay with plants, I started my first scientific journey with the premise that I just had to deepen a bit my R knowledge. I thought that the tools out there are simple enough for achieving my neat MSc task.
 
-Being a big fan of R and other open source tools, I was happy to find quite a bit of chemometrics and other modeling toolsets, many of them for example available via [CRAN](https://cran.r-project.org/) and listed in the CRAN Task View [Chemometrics and Computational Physics](https://cran.r-project.org/web/views/ChemPhys.html). I would opinionately consider most of them good at solving single tasks, but I somehow missed a clean common interface that interlinked the key steps required for spectral processing and modeling. While doing first analysis steps, my intuition told me that streamlining all analysis steps would be aiding in more efficiently estimating the composition and properties of natural materials. And more importantly, I would allow a sustainable basis for model development and sharing with collaborators.
+Being a big fan of R and other open source tools, I was happy to find quite a bit of chemometrics and other modeling toolsets, many of them for example available via [CRAN](https://cran.r-project.org/) and listed in the CRAN Task View [Chemometrics and Computational Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine Learning & Statistical Learning](https://cran.r-project.org/web/views/MachineLearning.html). I would opinionately consider most of them good at solving single tasks, but I somehow missed a clean common interface that interlinked the key steps required for spectral processing and modeling. While doing first analysis steps, my intuition told me that streamlining all analysis steps would be aiding in more efficiently estimating the composition and properties of natural materials. And more importantly, I would allow a sustainable basis for model development and sharing with collaborators.
 
 However, I was far from being there (now still). Soon I realized that while extending explorations of various options along modeling steps, such as pre-processing to achieve robust and accurate models, I ended up writing more and more verbose code for repetitive or only slighly different tasks. I felt I could do better at some point and get rid of the verbose boilerplate coding I was doing. To solve this more elegantly, I started continously building the simplerspec package with the goal of delivering beginner-friendly and standardized functions. In short, to provide a rapid prototyping pipeline for various spectroscopy applications that share common tasks.
 
 # Prepare the R environment for spectral analysis
 
-To reproduce the entire analysis in this hands-on, I would advise two main procedures:
+Enough of the personal talking. To reproduce the entire analysis in this hands-on, I would advise two main procedures:
 
 1. Installing exact package versions and sources using the renv package and the snapshot file `renv.lock`
 2. Manual installation of R packages with specific version tags
@@ -50,11 +50,9 @@ if (length(new_pkgs)) {
 }
 ```
 
-
-
 # Hands-on
 
-Now we are ready to proceed to the fundamentals of the package.
+Now we are ready to proceed to the fundamentals of the package. First, let's load required packages. The tidyverse is optional, so if you feel it is not required you won't need to load it.
 
 ```{r}
 # Load required packages
@@ -74,14 +72,32 @@ A typical simple spectroscopy modeling project has the following components:
 5. Soil analytical reference analyses
 6. 
     a. Calibration or Recalibration
+    b. Estimation of properties of new soils based on new spectra and established models.
 
 Simplerspec focuses on the key tasks and provides user-friendly modules in the form of a standardized function pipeline. This pipeline builds upon common design principles of spectral R objects which are shared between function inputs and outputs.
 
-First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior the standard chemical analysis. This is useful when 
+First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior the standard chemical analysis. This is useful when you have a lot of samples and you want to save some time and money to to do reference analysis, and then predict the remaining samples only with infrared spectroscopy.
+
+Here we read from a Bruker Alpha mid-Infrared spectrometer:
+
+```{r}
+# Files to read
+files_spc <- list.files("data/spectra/example-yamsys", full.names = TRUE)
+files_spc[[1]]
+# Read the files
+spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"))
+length(spc_list)
+names(spc_list)
+```
+
+Typically, list information is nicely ordered, however printing is really verbose.ß
+Therefore, we can gather the list into a so-called spectral tibble (`spc_tbl`).
 
 The spectral pre-processing pipeline is what is abstracted in these basic steps that are commonly done.
 
 # Outro
+
+Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would be great to co-develop a new set of programs that automatically tune spectral machine learning pipelines. If you have ideas, just send an email to me or interact via github.
 
 ```{r}
 devtools::session_info()
