@@ -2,8 +2,12 @@
 title: "Article"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-01"
-output:
-  github_document
+output: 
+  pinp::pinp:
+    fig_caption: yes
+    collapse: true
+    keep_tex: true
+    latex_engine: xelatex
 ---
 
 ```{r setup, include=FALSE}
@@ -72,7 +76,7 @@ Simplerspec focuses on the key tasks and provides user-friendly modules in the f
 
 ```{r}
 # Read final reference analysis data
-# see  ̀data/reference-data/metadata_soilchem_yamsys.txt` for further details
+# see data/reference-data/metadata_soilchem_yamsys.txt for further details
 (reference_data <- fread(
   file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
   as_tibble())
@@ -122,7 +126,7 @@ dim(spc_dt); class(spc_dt)
 
 Let's plot what we have first:
 
-```{r, out.width = 3.5}
+```{r}
 spc_tbl %>%
   mutate(
     label_all = "All spectra"
@@ -137,11 +141,7 @@ spc_tbl %>%
 
 The spectral pre-processing pipeline of simplerspec comprises basic steps that are often performed for spectral modeling and estimation. Simplerspec uses prospectr for key steps and data.table for simple operations. The following scheme summarizes the steps.
 
-
-
-Resampling in this contexts refers to to creating a new a axis interval in spectra. 
-
-In a nutshell, spectral data processing can be done in one pipeline.
+In a nutshell, spectral data processing can be done in one pipeline. Resampling in this contexts refers to to creating a new a axis interval in spectra. Spectra are averaged because there are 3 replicate measurements for each soil sample. Preprocessing is done to reduce scattering and noise in spectra.
 
 ```{r}
 spc_proc <- 
@@ -184,8 +184,8 @@ spc_refdata <-
     x = spc_proc,
     y = reference_data %>% rename(sample_id = sample_ID)
   )
-spc_refdata %>%
-  skimr::skim(starts_with("spc"))
+# spc_refdata %>%
+#   skimr::skim(starts_with("spc"))
 ```
 
 ```{r}
