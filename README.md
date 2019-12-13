@@ -162,23 +162,13 @@ package simplerspec.io.
 ``` r
 plan(multisession)
 registerDoFuture()
-availableCores()
-```
+# availableCores()
 
-    ## system 
-    ##      8
-
-``` r
 # files to read
 files_spc <- list.files(
   here("data", "spectra", "example-yamsys"), full.names = TRUE)
 # one example file
-files_spc[[1]]
-```
-
-    ## [1] "/media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/data/spectra/example-yamsys/BF_lo_01_soil_cal.0"
-
-``` r
+# files_spc[[1]]
 # read the files
 suppressMessages(
   spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"), 
@@ -359,7 +349,7 @@ develop a partial least squares (PLS) calibration model.
 
 ``` r
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
-  evaluation_method = "resampling")
+  evaluation_method = "resampling", print = FALSE)
 ```
 
     ## Adding missing grouping variables: `sample_id`

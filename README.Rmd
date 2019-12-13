@@ -90,13 +90,13 @@ Here we read from a Bruker Alpha mid-Infrared spectrometer. Currently, the packa
 ```{r}
 plan(multisession)
 registerDoFuture()
-availableCores()
+# availableCores()
 
 # files to read
 files_spc <- list.files(
   here("data", "spectra", "example-yamsys"), full.names = TRUE)
 # one example file
-files_spc[[1]]
+# files_spc[[1]]
 # read the files
 suppressMessages(
   spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"), 
@@ -190,7 +190,7 @@ Lastly, we develop a partial least squares (PLS) calibration model.
 
 ```{r}
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
-  evaluation_method = "resampling")
+  evaluation_method = "resampling", print = FALSE)
 pls_carbon$p_model +
   xlab(expression(paste("Measured C [g", ~kg^-1))) +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
