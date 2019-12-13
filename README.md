@@ -121,21 +121,10 @@ between function inputs and outputs.
 
 ``` r
 # Read final reference analysis data
-(reference_data <- read_csv(
-  file = here("data", "reference-data", "soilchem_yamsys.csv")))
+(reference_data <- fread(
+  file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
+  as_tibble())
 ```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_double(),
-    ##   sample_ID = col_character(),
-    ##   country = col_character(),
-    ##   site = col_character(),
-    ##   material = col_character(),
-    ##   site_comb = col_character()
-    ## )
-
-    ## See spec(...) for full column specifications.
 
     ## # A tibble: 94 x 36
     ##    sample_ID country site  material     S     C     N ex_Ca ex_Mg  ex_K
