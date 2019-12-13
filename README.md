@@ -1,6 +1,6 @@
 Article
 ================
-Philipp Baumann
+Philipp Baumann | <philipp.baumann@usys.ethz.ch>
 2019-12-01
 
 # Intro
@@ -119,12 +119,50 @@ in the form of a standardized function pipeline. This pipeline builds
 upon common design principles of spectral R objects which are shared
 between function inputs and outputs.
 
+``` r
+# Read final reference analysis data
+(reference_data <- read_csv(
+  file = here("data", "reference-data", "soilchem_yamsys.csv")))
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   .default = col_double(),
+    ##   sample_ID = col_character(),
+    ##   country = col_character(),
+    ##   site = col_character(),
+    ##   material = col_character(),
+    ##   site_comb = col_character()
+    ## )
+
+    ## See spec(...) for full column specifications.
+
+    ## # A tibble: 94 x 36
+    ##    sample_ID country site  material     S     C     N ex_Ca ex_Mg  ex_K
+    ##    <chr>     <chr>   <chr> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ##  1 BF_lo_01… BF      lo    soil      71.3  6.92 0.438  488   62.5 113  
+    ##  2 BF_lo_02… BF      lo    soil      87    5.73 0.447  656   47.5 140  
+    ##  3 BF_lo_03… BF      lo    soil      72.   3.41 0.233  270   21.9  61.6
+    ##  4 BF_lo_04… BF      lo    soil      73    5.37 0.423  532.  49.5 110. 
+    ##  5 BF_lo_05… BF      lo    soil      70    9.03 0.624  604   92.6 115  
+    ##  6 BF_lo_06… BF      lo    soil      57    3.58 0.276  426   41.8  90.7
+    ##  7 BF_lo_07… BF      lo    soil      56    4.66 0.355  321   46    72.9
+    ##  8 BF_lo_08… BF      lo    soil      53    4.26 0.315  250   34.1  75.5
+    ##  9 BF_lo_09… BF      lo    soil      57    4.30 0.336  375   47    88.5
+    ## 10 BF_lo_10… BF      lo    soil      42.0  2.93 0.262  225   31.6 121  
+    ## # … with 84 more rows, and 26 more variables: ex_Al <dbl>, ex_Na <dbl>,
+    ## #   ex_Fe <dbl>, ex_Mn <dbl>, pH_BaCl2 <dbl>, CEC_eff <dbl>, BS_eff <dbl>,
+    ## #   pH <dbl>, P_resin <dbl>, Fe_tot <dbl>, Si_tot <dbl>, Al_tot <dbl>,
+    ## #   P_tot <dbl>, K_tot <dbl>, Ca_tot <dbl>, Mn_tot <dbl>, Zn_tot <dbl>,
+    ## #   Cu_tot <dbl>, Zn_DTPA <dbl>, Cu_DTPA <dbl>, Fe_DTPA <dbl>,
+    ## #   Mn_DTPA <dbl>, sand <dbl>, clay <dbl>, silt <dbl>, site_comb <chr>
+
 First, you may want to read files from spectra that you measured on your
 spectrometer. Spectral inputting is the first step done when doing
-spectral analysis prior the standard chemical analysis. This is useful
-when you have a lot of samples and you want to save some time and money
-to to do reference analysis, and then predict the remaining samples only
-with infrared spectroscopy.
+spectral analysis prior to the standard chemical analysis. This is
+useful when you have a lot of samples and you want to save some time and
+money to to do reference analysis, and then predict the remaining
+samples only with infrared spectroscopy.
 
 Here we read from a Bruker Alpha mid-Infrared spectrometer:
 
@@ -225,7 +263,7 @@ spc_tbl %>%
   )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 The spectral pre-processing pipeline is what is abstracted in these
 basic steps that are commonly done. Simplerspec uses prospectr for key
@@ -275,7 +313,7 @@ spc_proc %>%
     ylab = "Preprocessed Absorbance")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 After preprocessing, we can proceed with selecting reference analytical
 samples based on Kennard-Stone.
@@ -286,7 +324,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 spc_tbl_selection$spc_ref
@@ -330,10 +368,76 @@ spc_tbl_selection$spc_pred
     ## # … with 37 more rows, and 4 more variables: wavenumbers_rs <list>,
     ## #   spc_mean <list>, spc_pre <list>, xvalues_pre <list>
 
+Lastly, we develop a partial least squares (PLS) calibration model.
+
+``` r
+# Fuse spectra
+(spc_refdata <- 
+  dplyr::inner_join(
+    x = spc_proc,
+    y = reference_data %>% rename(sample_id = sample_ID)
+  ))
+```
+
+    ## Joining, by = "sample_id"
+
+    ## # A tibble: 284 x 46
+    ##    unique_id file_id sample_id metadata spc   wavenumbers spc_rs
+    ##    <chr>     <chr>   <chr>     <list>   <lis> <list>      <list>
+    ##  1 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  2 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  3 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  4 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  5 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  6 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  7 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  8 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
+    ##  9 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
+    ## 10 BF_lo_04… BF_lo_… BF_lo_04… <tibble… <df[… <dbl [1,71… <df[,…
+    ## # … with 274 more rows, and 39 more variables: wavenumbers_rs <list>,
+    ## #   spc_mean <list>, spc_pre <list>, xvalues_pre <list>, country <chr>,
+    ## #   site <chr>, material <chr>, S <dbl>, C <dbl>, N <dbl>, ex_Ca <dbl>,
+    ## #   ex_Mg <dbl>, ex_K <dbl>, ex_Al <dbl>, ex_Na <dbl>, ex_Fe <dbl>,
+    ## #   ex_Mn <dbl>, pH_BaCl2 <dbl>, CEC_eff <dbl>, BS_eff <dbl>, pH <dbl>,
+    ## #   P_resin <dbl>, Fe_tot <dbl>, Si_tot <dbl>, Al_tot <dbl>, P_tot <dbl>,
+    ## #   K_tot <dbl>, Ca_tot <dbl>, Mn_tot <dbl>, Zn_tot <dbl>, Cu_tot <dbl>,
+    ## #   Zn_DTPA <dbl>, Cu_DTPA <dbl>, Fe_DTPA <dbl>, Mn_DTPA <dbl>,
+    ## #   sand <dbl>, clay <dbl>, silt <dbl>, site_comb <chr>
+
+``` r
+pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
+  evaluation_method = "resampling")
+```
+
+    ## Adding missing grouping variables: `sample_id`
+
+    ## Warning in min(x): no non-missing arguments to min; returning Inf
+
+    ## Warning in max(x): no non-missing arguments to max; returning -Inf
+
+    ## Warning in min(x): no non-missing arguments to min; returning Inf
+
+    ## Warning in max(x): no non-missing arguments to max; returning -Inf
+
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+``` r
+pls_carbon$p_model +
+  xlab(expression(paste("Measured C [g]", ~kg^-1)))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+
 # Outro
 
 Simplerspec are some first baby steps in spectral adventures. It would
 be great to further develop streamlining packages which are good at
 doing single things. It would also be fantastic to co-develop a new set
 of programs that automatically tune spectral machine learning pipelines.
-If you have ideas, just send me an email or interact via github.
+For example, one could create a custom graph learner using mlr3 and a
+preprocessing wrapper targeted to spectral analysis. If you have ideas,
+just send me an email or interact via github. Last but not least, I
+would like to give a big thanks to my generous supervisor for providing
+me infinite freedom in my science bubble. Working without constraints
+and waking up everyday with thinking “alright — what am I going to do
+today?” feels amazing.

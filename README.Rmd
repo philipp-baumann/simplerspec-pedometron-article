@@ -1,6 +1,6 @@
 ---
 title: "Article"
-author: "Philipp Baumann"
+author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-01"
 output:
   github_document
@@ -76,7 +76,14 @@ A typical simple spectroscopy modeling project has the following components:
 
 Simplerspec focuses on the key tasks and provides user-friendly modules in the form of a standardized function pipeline. This pipeline builds upon common design principles of spectral R objects which are shared between function inputs and outputs.
 
-First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior the standard chemical analysis. This is useful when you have a lot of samples and you want to save some time and money to to do reference analysis, and then predict the remaining samples only with infrared spectroscopy.
+```{r}
+# Read final reference analysis data
+(reference_data <- read_csv(
+  file = here("data", "reference-data", "soilchem_yamsys.csv")))
+```
+
+
+First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior to the standard chemical analysis. This is useful when you have a lot of samples and you want to save some time and money to to do reference analysis, and then predict the remaining samples only with infrared spectroscopy.
 
 Here we read from a Bruker Alpha mid-Infrared spectrometer:
 
@@ -169,11 +176,28 @@ spc_tbl_selection$p_pca
 spc_tbl_selection$spc_ref
 spc_tbl_selection$spc_pred
 ```
+Lastly, we develop a partial least squares (PLS) calibration model. 
+
+```{r}
+# Fuse spectra
+(spc_refdata <- 
+  dplyr::inner_join(
+    x = spc_proc,
+    y = reference_data %>% rename(sample_id = sample_ID)
+  ))
+```
+
+```{r}
+pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
+  evaluation_method = "resampling")
+pls_carbon$p_model +
+  xlab(expression(paste("Measured C [g]", ~kg^-1)))
+```
 
 
 # Outro
 
-Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would also be fantastic to co-develop a new set of programs that automatically tune spectral machine learning pipelines. If you have ideas, just send me an email or interact via github.
+Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would also be fantastic to co-develop a new set of programs that automatically tune spectral machine learning pipelines. For example, one could create a custom graph learner using mlr3 and a preprocessing wrapper targeted to spectral analysis. If you have ideas, just send me an email or interact via github. Last but not least, I would like to give a big thanks to my generous supervisor for providing me infinite freedom in my science bubble. Working without constraints and waking up everyday with thinking "alright --- what am I going to do today?" feels amazing.
 
 ```{r}
 ```
