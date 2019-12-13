@@ -278,28 +278,10 @@ spc_proc %>%
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 After preprocessing, we can proceed with selecting reference analytical
-samples based on
-    Kennard-Stone.
+samples based on Kennard-Stone.
 
 ``` r
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
-```
-
-    ## Warning: Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.
-    ## Please use the non-prefixed form or `!!` instead.
-    ## 
-    ##   # Bad:
-    ##   rlang::expr(mean(rlang::UQ(var) * 100))
-    ## 
-    ##   # Ok:
-    ##   rlang::expr(mean(UQ(var) * 100))
-    ## 
-    ##   # Good:
-    ##   rlang::expr(mean(!!var * 100))
-    ## 
-    ## This warning is displayed once per session.
-
-``` r
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
