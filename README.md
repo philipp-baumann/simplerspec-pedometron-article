@@ -66,7 +66,8 @@ renv::restore("renv.lock")
 ```
 
 Option 1 is probably the easiest as it makes automatically sure that all
-dependencies are met and the computational environment is the same.
+dependencies are met and the computational environment is the same
+(apart from operating system and system tools).
 
 To install and attach all required R packages used in this article with
 more manual care and less guarantees, you can run the following lines:
@@ -173,7 +174,7 @@ files_spc <- list.files(
 # files_spc[[1]]
 # read the files
 suppressMessages(
-  spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"), 
+  spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"),
     parallel = TRUE)
 )
 length(spc_list)
@@ -316,7 +317,7 @@ spc_tbl_selection$p_pca
 develop a partial least squares (PLS) calibration model.
 
 ``` r
-# Fuse spectra
+# Fuse spectra and reference data
 (spc_refdata <- 
   dplyr::inner_join(
     x = spc_proc,

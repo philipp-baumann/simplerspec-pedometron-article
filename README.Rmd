@@ -34,7 +34,7 @@ install.packages("renv")
 renv::restore("renv.lock")
 ```
 
-Option 1 is probably the easiest as it makes automatically sure that all dependencies are met and the computational environment is the same.
+Option 1 is probably the easiest as it makes automatically sure that all dependencies are met and the computational environment is the same (apart from operating system and system tools).
 
 To install and attach all required R packages used in this article with more manual care and less guarantees, you can run the following lines:
 
@@ -182,7 +182,7 @@ spc_tbl_selection$p_pca
 Lastly, we develop a partial least squares (PLS) calibration model. 
 
 ```{r}
-# Fuse spectra
+# Fuse spectra and reference data
 (spc_refdata <- 
   dplyr::inner_join(
     x = spc_proc,
