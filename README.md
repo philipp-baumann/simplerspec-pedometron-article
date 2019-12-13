@@ -218,14 +218,10 @@ atomic vector. With this we can extract this list column of spectra.
 
 ``` r
 spc_dt <- data.table::rbindlist(spc_tbl$spc)
-dim(spc_dt)
+dim(spc_dt); class(spc_dt)
 ```
 
     ## [1]  284 1716
-
-``` r
-class(spc_dt)
-```
 
     ## [1] "data.table" "data.frame"
 
