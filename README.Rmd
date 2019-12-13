@@ -3,11 +3,7 @@ title: "Article"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-01"
 output: 
-  pinp::pinp:
-    fig_caption: yes
-    collapse: true
-    keep_tex: true
-    latex_engine: xelatex
+  github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -77,9 +73,12 @@ Simplerspec focuses on the key tasks and provides user-friendly modules in the f
 ```{r}
 # Read final reference analysis data
 # see data/reference-data/metadata_soilchem_yamsys.txt for further details
-(reference_data <- fread(
+reference_data <- fread(
   file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
-  as_tibble())
+  as_tibble()
+# number of rows and columns
+dim(reference_data)
+reference_data[1:5, ]
 ```
 
 First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior to the standard chemical analysis. This is useful when you have a lot of samples and you want to save some time and money to to do reference analysis, and then predict the remaining samples only with infrared spectroscopy.
@@ -141,14 +140,16 @@ spc_tbl %>%
 
 The spectral pre-processing pipeline of simplerspec comprises basic steps that are often performed for spectral modeling and estimation. Simplerspec uses prospectr for key steps and data.table for simple operations. The following scheme summarizes the steps.
 
-In a nutshell, spectral data processing can be done in one pipeline. Resampling in this contexts refers to to creating a new a axis interval in spectra. Spectra are averaged because there are 3 replicate measurements for each soil sample. Preprocessing is done to reduce scattering and noise in spectra.
+In a nutshell, spectral data processing can be done in one pipeline. Resampling in this context refers to to creating a new a axis interval in spectra. Spectra are averaged because there are 3 replicate measurements for each soil sample. Preprocessing is done to reduce scattering and noise in spectra.
 
 ```{r}
 spc_proc <- 
   spc_tbl %>%
   resample_spc(wn_lower = 2500, wn_upper = 3996, wn_interval = 2) %>%
   average_spc(by = "sample_id") %>%
-  preprocess_spc(select = "sg_1_w21")
+  preprocess_spc(select = "sg_1_w21") %>%
+  group_by(sample_id) %>%
+  slice(1L)
 
 colnames(spc_proc)
 ```
@@ -161,6 +162,7 @@ spc_proc %>%
     x = .,
     y = reference_data %>% rename(sample_id = sample_ID)
   ) %>%
+  filter(site %in% c("lo", "mo")) %>% 
   plot_spc_ext(
     spc_tbl = .,
     lcols_spc = c("spc", "spc_pre"),

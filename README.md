@@ -117,31 +117,34 @@ between function inputs and outputs.
 
 ``` r
 # Read final reference analysis data
-# see  ̀data/reference-data/metadata_soilchem_yamsys.txt` for further details
-(reference_data <- fread(
+# see data/reference-data/metadata_soilchem_yamsys.txt for further details
+reference_data <- fread(
   file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
-  as_tibble())
+  as_tibble()
+# number of rows and columns
+dim(reference_data)
 ```
 
-    ## # A tibble: 94 x 36
-    ##    sample_ID country site  material     S     C     N ex_Ca ex_Mg  ex_K
-    ##    <chr>     <chr>   <chr> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-    ##  1 BF_lo_01… BF      lo    soil      71.3  6.92 0.438  488   62.5 113  
-    ##  2 BF_lo_02… BF      lo    soil      87    5.73 0.447  656   47.5 140  
-    ##  3 BF_lo_03… BF      lo    soil      72.   3.41 0.233  270   21.9  61.6
-    ##  4 BF_lo_04… BF      lo    soil      73    5.37 0.423  532.  49.5 110. 
-    ##  5 BF_lo_05… BF      lo    soil      70    9.03 0.624  604   92.6 115  
-    ##  6 BF_lo_06… BF      lo    soil      57    3.58 0.276  426   41.8  90.7
-    ##  7 BF_lo_07… BF      lo    soil      56    4.66 0.355  321   46    72.9
-    ##  8 BF_lo_08… BF      lo    soil      53    4.26 0.315  250   34.1  75.5
-    ##  9 BF_lo_09… BF      lo    soil      57    4.30 0.336  375   47    88.5
-    ## 10 BF_lo_10… BF      lo    soil      42.0  2.93 0.262  225   31.6 121  
-    ## # … with 84 more rows, and 26 more variables: ex_Al <dbl>, ex_Na <dbl>,
-    ## #   ex_Fe <dbl>, ex_Mn <dbl>, pH_BaCl2 <dbl>, CEC_eff <dbl>, BS_eff <dbl>,
-    ## #   pH <dbl>, P_resin <dbl>, Fe_tot <dbl>, Si_tot <dbl>, Al_tot <dbl>,
-    ## #   P_tot <dbl>, K_tot <dbl>, Ca_tot <dbl>, Mn_tot <dbl>, Zn_tot <dbl>,
-    ## #   Cu_tot <dbl>, Zn_DTPA <dbl>, Cu_DTPA <dbl>, Fe_DTPA <dbl>,
-    ## #   Mn_DTPA <dbl>, sand <dbl>, clay <dbl>, silt <dbl>, site_comb <chr>
+    ## [1] 94 36
+
+``` r
+reference_data[1:5, ]
+```
+
+    ## # A tibble: 5 x 36
+    ##   sample_ID country site  material     S     C     N ex_Ca ex_Mg  ex_K
+    ##   <chr>     <chr>   <chr> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 BF_lo_01… BF      lo    soil      71.3  6.92 0.438  488   62.5 113  
+    ## 2 BF_lo_02… BF      lo    soil      87    5.73 0.447  656   47.5 140  
+    ## 3 BF_lo_03… BF      lo    soil      72.   3.41 0.233  270   21.9  61.6
+    ## 4 BF_lo_04… BF      lo    soil      73    5.37 0.423  532.  49.5 110. 
+    ## 5 BF_lo_05… BF      lo    soil      70    9.03 0.624  604   92.6 115  
+    ## # … with 26 more variables: ex_Al <dbl>, ex_Na <dbl>, ex_Fe <dbl>,
+    ## #   ex_Mn <dbl>, pH_BaCl2 <dbl>, CEC_eff <dbl>, BS_eff <dbl>, pH <dbl>,
+    ## #   P_resin <dbl>, Fe_tot <dbl>, Si_tot <dbl>, Al_tot <dbl>, P_tot <dbl>,
+    ## #   K_tot <dbl>, Ca_tot <dbl>, Mn_tot <dbl>, Zn_tot <dbl>, Cu_tot <dbl>,
+    ## #   Zn_DTPA <dbl>, Cu_DTPA <dbl>, Fe_DTPA <dbl>, Mn_DTPA <dbl>,
+    ## #   sand <dbl>, clay <dbl>, silt <dbl>, site_comb <chr>
 
 First, you may want to read files from spectra that you measured on your
 spectrometer. Spectral inputting is the first step done when doing
@@ -240,7 +243,7 @@ spc_tbl %>%
   )
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-8-1.png" width="3.5" />
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 The spectral pre-processing pipeline of simplerspec comprises basic
 steps that are often performed for spectral modeling and estimation.
@@ -248,7 +251,7 @@ Simplerspec uses prospectr for key steps and data.table for simple
 operations. The following scheme summarizes the steps.
 
 In a nutshell, spectral data processing can be done in one pipeline.
-Resampling in this contexts refers to to creating a new a axis interval
+Resampling in this context refers to to creating a new a axis interval
 in spectra. Spectra are averaged because there are 3 replicate
 measurements for each soil sample. Preprocessing is done to reduce
 scattering and noise in spectra.
@@ -258,7 +261,9 @@ spc_proc <-
   spc_tbl %>%
   resample_spc(wn_lower = 2500, wn_upper = 3996, wn_interval = 2) %>%
   average_spc(by = "sample_id") %>%
-  preprocess_spc(select = "sg_1_w21")
+  preprocess_spc(select = "sg_1_w21") %>%
+  group_by(sample_id) %>%
+  slice(1L)
 
 colnames(spc_proc)
 ```
@@ -275,6 +280,7 @@ spc_proc %>%
     x = .,
     y = reference_data %>% rename(sample_id = sample_ID)
   ) %>%
+  filter(site %in% c("lo", "mo")) %>% 
   plot_spc_ext(
     spc_tbl = .,
     lcols_spc = c("spc", "spc_pre"),
@@ -310,32 +316,9 @@ spc_refdata <-
     ## Joining, by = "sample_id"
 
 ``` r
-spc_refdata %>%
-  skimr::skim(starts_with("spc"))
+# spc_refdata %>%
+#   skimr::skim(starts_with("spc"))
 ```
-
-|                                                  |            |
-| :----------------------------------------------- | :--------- |
-| Name                                             | Piped data |
-| Number of rows                                   | 284        |
-| Number of columns                                | 46         |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |            |
-| Column type frequency:                           |            |
-| list                                             | 4          |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |            |
-| Group variables                                  | None       |
-
-Data summary
-
-**Variable type:
-list**
-
-| skim\_variable | n\_missing | complete\_rate | n\_unique | min\_length | max\_length |
-| :------------- | ---------: | -------------: | --------: | ----------: | ----------: |
-| spc            |          0 |              1 |       284 |        1716 |        1716 |
-| spc\_rs        |          0 |              1 |       284 |         749 |         749 |
-| spc\_mean      |          0 |              1 |        94 |         749 |         749 |
-| spc\_pre       |          0 |              1 |        94 |         729 |         729 |
 
 ``` r
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
