@@ -239,7 +239,7 @@ spc_tbl %>%
   plot_spc_ext(
     spc_tbl = ., 
     group_id = "label_all",
-    ylab = "Absorbance",
+    ylab = "Absorbance"
   )
 ```
 
