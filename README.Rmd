@@ -83,7 +83,6 @@ Simplerspec focuses on the key tasks and provides user-friendly modules in the f
   as_tibble())
 ```
 
-
 First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior to the standard chemical analysis. This is useful when you have a lot of samples and you want to save some time and money to to do reference analysis, and then predict the remaining samples only with infrared spectroscopy.
 
 Here we read from a Bruker Alpha mid-Infrared spectrometer:
@@ -142,6 +141,8 @@ spc_tbl %>%
 
 The spectral pre-processing pipeline is what is abstracted in these basic steps that are commonly done. Simplerspec uses prospectr for key steps and data.table for simple operations. The following scheme summarizes the steps.
 
+
+
 Resampling in this contexts refers to to creating a new a axis interval in spectra. 
 
 In a nutshell, preprocessing can be done in one pipeline.
@@ -198,9 +199,4 @@ pls_carbon$p_model +
 
 # Outro
 
-Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would also be fantastic to co-develop a new set of programs that automatically tune spectral machine learning pipelines. For example, one could create a custom graph learner using mlr3 and a preprocessing wrapper targeted to spectral analysis. If you have ideas, just send me an email or interact via github. Last but not least, I would like to give a big thanks to my generous supervisor for providing me infinite freedom in my science bubble. Working without constraints and waking up everyday with thinking "alright --- what am I going to do today?" feels amazing.
-
-```{r}
-```
-
-
+Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would also be fantastic to co-develop a new set of programs that automatically tune spectral machine learning pipelines. For example, one could create a custom graph learner using mlr3 and a preprocessing wrapper targeted to spectral analysis. If you have ideas, just send me an email or interact via github. Last but not least, I would like to give a big thanks to my generous supervisor for providing me infinite freedom in my science bubble. A big thank goes also to my main advisor and many more part and full-time advisors. Working without constraints and waking up everyday with thinking "alright --- what am I going to do today?" feels amazing.

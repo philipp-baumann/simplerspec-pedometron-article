@@ -427,6 +427,7 @@ For example, one could create a custom graph learner using mlr3 and a
 preprocessing wrapper targeted to spectral analysis. If you have ideas,
 just send me an email or interact via github. Last but not least, I
 would like to give a big thanks to my generous supervisor for providing
-me infinite freedom in my science bubble. Working without constraints
-and waking up everyday with thinking “alright — what am I going to do
-today?” feels amazing.
+me infinite freedom in my science bubble. A big thank goes also to my
+main advisor and many more part and full-time advisors. Working without
+constraints and waking up everyday with thinking “alright — what am I
+going to do today?” feels amazing.
