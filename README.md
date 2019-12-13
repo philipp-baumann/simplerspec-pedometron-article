@@ -259,7 +259,7 @@ scattering and noise in spectra.
 ``` r
 spc_proc <- 
   spc_tbl %>%
-  resample_spc(wn_lower = 2500, wn_upper = 3996, wn_interval = 2) %>%
+  resample_spc(wn_lower = 500, wn_upper = 3996, wn_interval = 2) %>%
   average_spc(by = "sample_id") %>%
   preprocess_spc(select = "sg_1_w21") %>%
   group_by(sample_id) %>%
