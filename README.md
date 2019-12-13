@@ -11,8 +11,8 @@ made as simple as possible, but not simpler”*. In line with this
 recommendation, I was told that spectral analysis in R is standard
 practice and straight forward using the famous partial least squares
 (PLS) regression when I started my MSc back in July 2015. I was given
-the honour of the exiting task to sample and model both soils and yam
-plants from 20 fields at 4 landscapes across the West African yam belt
+the honour of the exciting task to sample and model both soils and yam
+plants from 20 fields in 4 landscapes across the West African yam belt
 (see [here](www.yamsys.org) for details). Since I was both fascinated by
 R, statistics, soils, and their interplay with plants, I started my
 first scientific journey with the premise that I just had to deepen a
@@ -26,13 +26,13 @@ in the CRAN Task View [Chemometrics and Computational
 Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine
 Learning & Statistical
 Learning](https://cran.r-project.org/web/views/MachineLearning.html). I
-would opinionately consider most of them good at solving single tasks,
-but I somehow missed a clean common interface that interlinked the key
-steps required for spectral processing and modeling. While doing first
-analysis steps, my intuition told me that streamlining all analysis
-steps would be aiding in more efficiently estimating the composition and
-properties of natural materials. And more importantly, I would allow a
-sustainable basis for model development and sharing with collaborators.
+would consider most of them good at solving single tasks, but I somehow
+missed a clean common interface that interlinked the key steps required
+for spectral processing and modeling. While doing first analysis steps,
+my intuition told me that streamlining all analysis steps would aid in
+more efficiently estimating the composition and properties of natural
+materials. More importantly, it would allow a sustainable basis for
+model development and sharing with collaborators.
 
 However, I was far from being there (now still). Soon I realized that
 while extending explorations of various options along modeling steps,
@@ -195,8 +195,8 @@ spectral tibble (`spc_tbl`).
 
 Instead of appending a matrix of spectra as a single column in a
 data.frame, spectra in a spectral tibble form a list-column. A
-list-column is basically a column ist a list instead of an atomic
-vector. With this we can extract this list column of spectra.
+list-column is basically a column consisting of a list instead of an
+atomic vector. With this we can extract this list column of spectra.
 
 ``` r
 spc_dt <- data.table::rbindlist(spc_tbl$spc)
@@ -232,7 +232,8 @@ basic steps that are commonly done. Simplerspec uses prospectr for key
 steps and data.table for simple operations. The following scheme
 summarizes the steps.
 
-Resampling refers to create a new a axis interval in spectra.
+Resampling in this contexts refers to to creating a new a axis interval
+in spectra.
 
 In a nutshell, preprocessing can be done in one pipeline.
 
