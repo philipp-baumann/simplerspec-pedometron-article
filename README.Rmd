@@ -2,7 +2,8 @@
 title: "Article"
 author: "Philipp Baumann"
 date: "2019-12-01"
-output: github_document
+output:
+  github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -19,7 +20,7 @@ However, I was far from being there (now still). Soon I realized that while exte
 
 # Prepare the R environment for spectral analysis
 
-Enough of the personal talking. To reproduce the entire analysis in this hands-on, I would advise two main procedures:
+Enough of the personal talking, let's start. To reproduce the entire analysis in this hands-on, I would advise two main procedures:
 
 1. Installing exact package versions and sources using the renv package and the snapshot file `renv.lock`
 2. Manual installation of R packages with specific version tags
@@ -39,7 +40,8 @@ To install and attach all required R packages used in this article with more man
 
 ```{r}
 ## Option 2 for installation
-pkgs <- c("here", "simplerspec", "tidyverse", "data.table")
+pkgs <- c("here", "simplerspec", "tidyverse", "data.table",
+  "future", "doFuture")
 new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
 # Install only new packages
 if (length(new_pkgs)) {
@@ -62,11 +64,9 @@ suppressPackageStartupMessages(
 )
 ```
 
-
 A typical simple spectroscopy modeling project has the following components:
 
-1. Soil sampling
-2. Sample preparation
+1. Soil sampling and sample preparation
 3. Spectral measurements
 4. Selection of calibration samples
 5. Soil analytical reference analyses
@@ -81,26 +81,51 @@ First, you may want to read files from spectra that you measured on your spectro
 Here we read from a Bruker Alpha mid-Infrared spectrometer:
 
 ```{r}
-# Files to read
-files_spc <- list.files("data/spectra/example-yamsys", full.names = TRUE)
+plan(multisession)
+registerDoFuture()
+availableCores()
+
+# files to read
+files_spc <- list.files(
+  here("data", "spectra", "example-yamsys"), full.names = TRUE)
+# one example file
 files_spc[[1]]
-# Read the files
-spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"))
+# read the files
+suppressMessages(
+  spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"), 
+    parallel = TRUE)
+)
 length(spc_list)
-names(spc_list)
+names(spc_list[[1]])
 ```
 
-Typically, list information is nicely ordered, however printing is really verbose.ß
+Typically, list information is nicely ordered, however printing is really verbose.
 Therefore, we can gather the list into a so-called spectral tibble (`spc_tbl`).
 
-The spectral pre-processing pipeline is what is abstracted in these basic steps that are commonly done.
+```{r}
+# Gather from list into tibble data.frame
+(spc_tbl <- 
+  spc_list %>%
+  gather_spc())
+```
+
+Instead of appending a matrix of spectra as a single column in a data.frame, spectra in a spectral tibble form a list-column. A list-column is basically a column ist a list instead of an atomic vector. With this we can extract this list column of spectra.
+
+```{r}
+spc_dt <- data.table::rbindlist(spc_tbl$spc)
+dim(spc_dt)
+class(spc_dt)
+```
+
+The spectral pre-processing pipeline is what is abstracted in these basic steps that are commonly done. Simplerspec uses prospectr for key steps and data.table for simple operations. The following graph summarizes the steps.
+
+Resampling refers to create a new a axis interval in spectra. 
 
 # Outro
 
-Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would be great to co-develop a new set of programs that automatically tune spectral machine learning pipelines. If you have ideas, just send an email to me or interact via github.
+Simplerspec are some first baby steps in spectral adventures. It would be great to further develop streamlining packages which are good at doing single things. It would also be fantastic to co-develop a new set of programs that automatically tune spectral machine learning pipelines. If you have ideas, just send me an email or interact via github.
 
 ```{r}
-devtools::session_info()
 ```
 
 
