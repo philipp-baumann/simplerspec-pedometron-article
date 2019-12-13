@@ -144,11 +144,13 @@ Resampling in this contexts refers to to creating a new a axis interval in spect
 In a nutshell, spectral data processing can be done in one pipeline.
 
 ```{r}
-(spc_proc <- 
+spc_proc <- 
   spc_tbl %>%
   resample_spc(wn_lower = 2500, wn_upper = 3996, wn_interval = 2) %>%
   average_spc(by = "sample_id") %>%
-  preprocess_spc(select = "sg_1_w21"))
+  preprocess_spc(select = "sg_1_w21")
+
+colnames(spc_proc)
 ```
 
 We can explore the final processed spectra.

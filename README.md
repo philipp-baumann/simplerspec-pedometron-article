@@ -256,28 +256,18 @@ in spectra.
 In a nutshell, spectral data processing can be done in one pipeline.
 
 ``` r
-(spc_proc <- 
+spc_proc <- 
   spc_tbl %>%
   resample_spc(wn_lower = 2500, wn_upper = 3996, wn_interval = 2) %>%
   average_spc(by = "sample_id") %>%
-  preprocess_spc(select = "sg_1_w21"))
+  preprocess_spc(select = "sg_1_w21")
+
+colnames(spc_proc)
 ```
 
-    ## # A tibble: 284 x 11
-    ##    unique_id file_id sample_id metadata spc   wavenumbers spc_rs
-    ##    <chr>     <chr>   <chr>     <list>   <lis> <list>      <list>
-    ##  1 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  2 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  3 BF_lo_01… BF_lo_… BF_lo_01… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  4 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  5 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  6 BF_lo_02… BF_lo_… BF_lo_02… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  7 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  8 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
-    ##  9 BF_lo_03… BF_lo_… BF_lo_03… <tibble… <df[… <dbl [1,71… <df[,…
-    ## 10 BF_lo_04… BF_lo_… BF_lo_04… <tibble… <df[… <dbl [1,71… <df[,…
-    ## # … with 274 more rows, and 4 more variables: wavenumbers_rs <list>,
-    ## #   spc_mean <list>, spc_pre <list>, xvalues_pre <list>
+    ##  [1] "unique_id"      "file_id"        "sample_id"      "metadata"      
+    ##  [5] "spc"            "wavenumbers"    "spc_rs"         "wavenumbers_rs"
+    ##  [9] "spc_mean"       "spc_pre"        "xvalues_pre"
 
 We can explore the final processed spectra.
 
