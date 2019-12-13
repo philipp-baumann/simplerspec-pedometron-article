@@ -146,11 +146,28 @@ In a nutshell, preprocessing can be done in one pipeline.
   preprocess_spc(select = "sg_1_w21"))
 ```
 
+We can explore the final processed spectra.
+
+```{r}
+spc_proc %>%
+  mutate(
+    label_proc = "Preprocessed spectra"
+  ) %>%
+  plot_spc_ext(
+    spc_tbl = .,
+    lcols_spc = c("spc_pre"),
+    group_id = "label_proc",
+    ylab = "Preprocessed Absorbance")
+```
 
 After preprocessing, we can proceed with selecting reference analytical samples based on Kennard-Stone.
 
 ```{r}
-(spc_tbl_ref <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5))
+spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
+# PCA biplot
+spc_tbl_selection$p_pca
+spc_tbl_selection$spc_ref
+spc_tbl_selection$spc_pred
 ```
 
 
