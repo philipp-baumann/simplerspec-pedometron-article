@@ -13,11 +13,11 @@ practice and straight forward using the famous partial least squares
 (PLS) regression when I started my MSc back in July 2015. I was given
 the honour of the exciting task to sample and model both soils and yam
 plants from 20 fields in 4 landscapes across the West African yam belt
-(see [here](https://yamsys.org) for details). Since I was both
-fascinated by R, statistics, soils, and their interplay with plants, I
-started my first scientific journey with the premise that I just had to
-deepen a bit my R knowledge. I thought that the tools out there are
-simple enough for achieving my neat MSc task.
+(see [here](http://yamsys.org) for details). Since I was both fascinated
+by R, statistics, soils, and their interplay with plants, I started my
+first scientific journey with the premise that I just had to deepen a
+bit my R knowledge. I thought that the tools out there are simple enough
+for achieving my neat MSc task.
 
 Being a big fan of R and other open source tools, I was happy to find
 quite a bit of chemometrics and other modeling toolsets, many of them
