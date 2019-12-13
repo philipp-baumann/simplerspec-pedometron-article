@@ -76,7 +76,7 @@ more manual care and less guarantees, you can run the following lines:
 ## Option 2 for installation
 pkgs <- c("simplerspec", "here", "tidyverse", "data.table",
   "future", "doFuture", "remotes")
-# install.packages(new_pkgs)
+# install.packages(pkgs)
 # remotes::install_github("philipp-baumann/simplerspec")}
 ```
 
@@ -117,6 +117,7 @@ between function inputs and outputs.
 
 ``` r
 # Read final reference analysis data
+# see  ̀data/reference-data/metadata_soilchem_yamsys.txt` for further details
 (reference_data <- fread(
   file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
   as_tibble())
@@ -241,10 +242,10 @@ spc_tbl %>%
 
 <img src="README_files/figure-gfm/unnamed-chunk-8-1.png" width="3.5" />
 
-The spectral pre-processing pipeline is what is abstracted in these
-basic steps that are commonly done. Simplerspec uses prospectr for key
-steps and data.table for simple operations. The following scheme
-summarizes the steps.
+The spectral pre-processing pipeline of simplerspec comprises basic
+steps that are often performed for spectral modeling and estimation.
+Simplerspec uses prospectr for key steps and data.table for simple
+operations. The following scheme summarizes the steps.
 
 Resampling in this contexts refers to to creating a new a axis interval
 in spectra.
@@ -361,12 +362,13 @@ platform](https://sae-interactive-data.ethz.ch/simplerspec.drc/) uses
 some of its functionality. It would be great to further develop
 streamlining packages which are good at doing single things. It would
 also be fantastic to co-develop a new set of programs that automatically
-tune spectral machine learning pipelines. For example, one could create
-a custom graph learner using mlr3 and a preprocessing wrapper targeted
-to spectral analysis, in connection with a proper database system. If
-you have ideas, just send me an email or interact via github. Last but
-not least, I would like to give a big thanks to my generous supervisor
-for providing me infinite freedom in my science bubble. A big thank goes
-also to my main advisor and many more part and full-time advisors in my
-PhD committee. Working without constraints and waking up every day with
-thinking “alright — what am I going to do today?” feels amazing.
+tune spectral machine learning pipelines. Complex problems require
+targeted learning. For example, one could create a custom graph learner
+using mlr3 and a preprocessing wrapper targeted to spectral analysis, in
+connection with a proper database system. If you have ideas, just send
+me an email or interact via github. Last but not least, I would like to
+give a big thanks to my generous supervisor for providing me infinite
+freedom in my science bubble. A big thank goes also to my main advisor
+and many more part and full-time advisors in my PhD committee. Working
+without constraints and waking up every day with thinking “alright —
+what am I going to do today?” feels amazing.
