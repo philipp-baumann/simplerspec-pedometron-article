@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Intro
 
-Albert Einstein would probably not have felt the necessity for simplerspec, as he would have followed his quote *"Everything should be made as simple as possible, but not simpler"*. In line with this recommendation, I was told that spectral analysis in R is standard practice and straight forward using the famous partial least squares (PLS) regression when I started my MSc back in July 2015. I was given the honour of  the exciting task to sample and model both soils and yam plants from 20 fields in 4 landscapes across the West African yam belt (see [here](www.yamsys.org) for details). Since I was both fascinated by R, statistics, soils, and their interplay with plants, I started my first scientific journey with the premise that I just had to deepen a bit my R knowledge. I thought that the tools out there are simple enough for achieving my neat MSc task.
+Albert Einstein would probably not have felt the necessity for simplerspec, as he would have followed his quote *"Everything should be made as simple as possible, but not simpler"*. In line with this recommendation, I was told that spectral analysis in R is standard practice and straight forward using the famous partial least squares (PLS) regression when I started my MSc back in July 2015. I was given the honour of  the exciting task to sample and model both soils and yam plants from 20 fields in 4 landscapes across the West African yam belt (see [here](https://yamsys.org) for details). Since I was both fascinated by R, statistics, soils, and their interplay with plants, I started my first scientific journey with the premise that I just had to deepen a bit my R knowledge. I thought that the tools out there are simple enough for achieving my neat MSc task.
 
 Being a big fan of R and other open source tools, I was happy to find quite a bit of chemometrics and other modeling toolsets, many of them for example available via [CRAN](https://cran.r-project.org/) and listed in the CRAN Task View [Chemometrics and Computational Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine Learning & Statistical Learning](https://cran.r-project.org/web/views/MachineLearning.html). I would consider most of them good at solving single tasks, but I somehow missed a clean common interface that interlinked the key steps required for spectral processing and modeling. While doing first analysis steps, my intuition told me that streamlining all analysis steps would aid in more efficiently estimating the composition and properties of natural materials. More importantly, it would allow a sustainable basis for model development and sharing with collaborators.
 
@@ -88,6 +88,8 @@ First, you may want to read files from spectra that you measured on your spectro
 Here we read from a Bruker Alpha mid-Infrared spectrometer. Currently, the package is limited to Bruker and ASD devices, however support for reading files from other devices and formats is planned within the package simplerspec.io.
 
 ```{r}
+# multicore would work on UNIX/Darwin, however not supported for RStudio
+# and the future package due to stability reasons
 plan(multisession)
 registerDoFuture()
 # availableCores()
@@ -95,11 +97,11 @@ registerDoFuture()
 # files to read
 files_spc <- list.files(
   here("data", "spectra", "example-yamsys"), full.names = TRUE)
-# one example file
+# path to one example file
 # files_spc[[1]]
 # read the files
 suppressMessages(
-  spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"), 
+  spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"),
     parallel = TRUE)
 )
 length(spc_list)
