@@ -75,15 +75,9 @@ more manual care and less guarantees, you can run the following lines:
 ``` r
 ## Option 2 for installation
 pkgs <- c("simplerspec", "here", "tidyverse", "data.table",
-  "future", "doFuture")
-new_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
-# Install only new packages
-if (length(new_pkgs)) {
-  if ("remotes" %in% new_pkgs) install.packages("remotes")
-  if ("simplerspec" %in% new_pkgs) {
-    remotes::install_github("philipp-baumann/simplerspec")}
-  install.packages(new_pkgs)
-}
+  "future", "doFuture", "remotes")
+# install.packages(new_pkgs)
+# remotes::install_github("philipp-baumann/simplerspec")}
 ```
 
 # Hands-on
