@@ -250,6 +250,8 @@ steps that are often performed for spectral modeling and estimation.
 Simplerspec uses prospectr for key steps and data.table for simple
 operations. The following scheme summarizes the steps.
 
+![](img/simplerspec-read-proc-tibble.png)<!-- -->
+
 In a nutshell, spectral data processing can be done in one pipeline.
 Resampling in this context refers to to creating a new a axis interval
 in spectra. Spectra are averaged because there are 3 replicate
