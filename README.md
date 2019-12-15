@@ -37,7 +37,7 @@ boilerplate code. Henceforth, I started continously building
 simplerspec. The package aims to provide a rapid prototyping pipeline
 for various spectroscopy applications that share common tasks.
 
-# Prepare the R environment for spectral analysis
+# Hands-on
 
 Enough of the talking, let’s start. First, clone this repository to your
 local computer to reproduce the entire analysis in this hands-on. You
@@ -80,8 +80,6 @@ install.packages(pkgs)
 remotes::install_github("philipp-baumann/simplerspec")
 ```
 
-# Hands-on
-
 Now we are ready to proceed to the fundamentals of the package. We use
 the example data set from my MSc thesis. First, let’s load required
 packages.
@@ -111,17 +109,18 @@ components:
 Simplerspec focuses on the key tasks and provides user-friendly modules
 in the form of a standardized function pipeline. This pipeline builds
 upon common design principles of spectral R objects which are shared
-between function inputs and outputs.
+between function inputs and outputs. The spectral pre-processing
+pipeline comprises basic steps that are often performed for spectral
+modeling and estimation. Simplerspec uses prospectr for key steps and
+data.table for simple operations. The following scheme summarizes the
+spectral processing steps.
 
-First, you may want to read files from spectra that you measured on your
-spectrometer. Spectral inputting is the first step done when doing
-spectral analysis prior to the standard chemical analysis. This is
-useful when you have a lot of samples and you want to save some time and
-money to to do reference analysis, and then predict the remaining
-samples only with infrared spectroscopy.
+![](img/simplerspec-read-proc-tibble.png)<!-- -->
 
-Here we read from a Bruker Alpha mid-Infrared spectrometer. Currently,
-the package is limited to Bruker and ASD devices, however support for
+We assume that spectral measurements are done before chemical reference
+analyses as the former are faster and cheaper to do. Here we read the
+data from a Bruker Alpha mid-Infrared spectrometer. Currently, the
+package is limited to Bruker and ASD devices, however support for
 reading files from other devices and formats is planned within the
 package
 simplerspec.io.
@@ -193,29 +192,6 @@ dim(spc_dt); class(spc_dt)
 
     ## [1] "data.table" "data.frame"
 
-Let’s plot what we have first:
-
-``` r
-spc_tbl %>%
-  mutate(
-    label_all = "All spectra"
-  ) %>%
-  plot_spc_ext(
-    spc_tbl = ., 
-    group_id = "label_all",
-    ylab = "Absorbance"
-  )
-```
-
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
-
-The spectral pre-processing pipeline of simplerspec comprises basic
-steps that are often performed for spectral modeling and estimation.
-Simplerspec uses prospectr for key steps and data.table for simple
-operations. The following scheme summarizes the steps.
-
-![](img/simplerspec-read-proc-tibble.png)<!-- -->
-
 In a nutshell, spectral data processing can be done in one pipeline.
 Resampling in this context refers to to creating a new a axis interval
 in spectra. Spectra are averaged because there are 3 replicate
@@ -279,7 +255,7 @@ spc_proc %>%
 
     ## Joining, by = "sample_id"
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 After preprocessing, we can proceed with selecting reference analytical
 samples based on Kennard-Stone.
@@ -290,7 +266,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- --> Lastly, we
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- --> Lastly, we
 develop a partial least squares (PLS) calibration model.
 
 ``` r
@@ -317,7 +293,7 @@ pls_carbon$p_model +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 # Outro
 
