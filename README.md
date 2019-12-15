@@ -10,19 +10,19 @@ simplerspec, as he would have followed his quote *“Everything should be
 made as simple as possible, but not simpler”*. In line with this
 recommendation, I was told that spectral analysis in R is standard
 practice and straight forward using the famous partial least squares
-(PLS) regression when I started my MSc back in July 2015. I was given
-the honour of the exciting task to sample and model both soils and yam
-plants from 20 fields in 4 landscapes across the West African yam belt
-(see [here](http://yamsys.org) for details). Since I was both fascinated
-by R, statistics, soils, and their interplay with plants, I started my
+(PLS) regression when I started my MSc back in July 2015. I had the
+chance to sample and model both soils and yam plants from 20 fields in 4
+landscapes across the West African yam belt (see
+[here](http://yamsys.org) for details). Since I was both fascinated by
+R, statistics, soils, and their interplay with plants, I started my
 first scientific journey with the premise that I just had to deepen a
-bit my R knowledge. I thought that the tools out there are simple enough
-for achieving my neat MSc task.
+bit my R knowledge.
 
 Being a big fan of R and other open source tools, I was happy to find
-quite a bit of chemometrics and other modeling toolsets. Many of them
-are for example available via [CRAN](https://cran.r-project.org/) and
-listed in the CRAN Task View [Chemometrics and Computational
+quite a bit of chemometrics and other modeling toolsets during my MSc.
+Many of them are for example available via
+[CRAN](https://cran.r-project.org/) and listed in the CRAN Task View
+[Chemometrics and Computational
 Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine
 Learning & Statistical
 Learning](https://cran.r-project.org/web/views/MachineLearning.html). I
@@ -34,8 +34,8 @@ more efficiently estimating the composition and properties of natural
 materials. More importantly, it would allow a sustainable basis for
 model development and sharing with collaborators by reducing repetitive
 boilerplate code. Henceforth, I started continously building
-simplerspec, to provide a rapid prototyping pipeline for various
-spectroscopy applications that share common tasks.
+simplerspec. The package aims to provide a rapid prototyping pipeline
+for various spectroscopy applications that share common tasks.
 
 # Prepare the R environment for spectral analysis
 
@@ -49,17 +49,16 @@ website:
 git clone https://github.com/philipp-baumann/simplerspec-pedometron-article.git
 ```
 
-For the installation of packages I would advise two main procedures:
+For the installation of packages I would advise one of the two main
+procedures:
 
 1.  Installing exact package versions and sources using the renv package
     and the snapshot file `renv.lock`
 2.  Manual installation of R packages with specific version tags
 
-Option 1 is probably the easiest as it makes automatically sure that all
-dependencies are met and the computational environment is the same
-(apart from operating system and system tools). For this, install renv
-and restore simplerspec and remaining R packages based on the
-`renv.lock` file in an isolated project library in two lines of code.
+Procedure 1 installs renv, which is then used restore simplerspec and
+remaining R packages versions as described `renv.lock` file in an
+isolated project library.
 
 ``` r
 ## Option 1 for installation
@@ -85,9 +84,7 @@ remotes::install_github("philipp-baumann/simplerspec")
 
 Now we are ready to proceed to the fundamentals of the package. We use
 the example data set from my MSc thesis. First, let’s load required
-packages. The tidyverse is optional, so if you feel it is not required
-you won’t need to load
-it.
+packages.
 
 ``` r
 # Load required packages; `walk()` is like `lapply()`, but returns invisibly
@@ -335,9 +332,4 @@ tune spectral machine learning pipelines. Complex problems require
 targeted learning. For example, one could create a custom graph learner
 using mlr3 and a preprocessing wrapper targeted to spectral analysis, in
 connection with a proper database system. If you have ideas, just send
-me an email or interact via github. Last but not least, I would like to
-give a big thanks to my generous supervisor for providing me infinite
-freedom in my science bubble. A big thank goes also to my main advisor
-and many more part and full-time advisors in my PhD committee. Working
-without constraints and waking up every day with thinking “alright —
-what am I going to do today?” feels amazing.
+me an email or interact via github.
