@@ -3,7 +3,7 @@ title: "Article"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-01"
 output: 
-  pdf_document
+  github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -41,8 +41,10 @@ To install and attach all required R packages used in this article with more man
 ## Option 2 for installation
 pkgs <- c("simplerspec", "here", "tidyverse", "data.table",
   "future", "doFuture", "remotes")
-# install.packages(pkgs)
-# remotes::install_github("philipp-baumann/simplerspec")}
+```
+```{r, eval=FALSE}
+install.packages(pkgs)
+remotes::install_github("philipp-baumann/simplerspec")
 ```
 
 # Hands-on
@@ -69,24 +71,12 @@ A typical simple spectroscopy modeling project has the following components:
 
 Simplerspec focuses on the key tasks and provides user-friendly modules in the form of a standardized function pipeline. This pipeline builds upon common design principles of spectral R objects which are shared between function inputs and outputs.
 
-```{r}
-# Read final reference analysis data
-# see data/reference-data/metadata_soilchem_yamsys.txt for further details
-reference_data <- fread(
-  file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
-  as_tibble()
-# number of rows and columns
-dim(reference_data)
-reference_data[1:5, ]
-```
-
 First, you may want to read files from spectra that you measured on your spectrometer. Spectral inputting is the first step done when doing spectral analysis prior to the standard chemical analysis. This is useful when you have a lot of samples and you want to save some time and money to to do reference analysis, and then predict the remaining samples only with infrared spectroscopy.
 
 Here we read from a Bruker Alpha mid-Infrared spectrometer. Currently, the package is limited to Bruker and ASD devices, however support for reading files from other devices and formats is planned within the package simplerspec.io.
 
 ```{r}
-# multicore would work on UNIX/Darwin, however not supported for RStudio
-# and the future package due to stability reasons
+# multicore futures are not supported when using RStudio (stability reasons)
 plan(multisession)
 registerDoFuture()
 # availableCores()
@@ -94,8 +84,6 @@ registerDoFuture()
 # files to read
 files_spc <- list.files(
   here("data", "spectra", "example-yamsys"), full.names = TRUE)
-# path to one example file
-# files_spc[[1]]
 # read the files
 suppressMessages(
   spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"),
@@ -106,10 +94,9 @@ names(spc_list[[1]])
 ```
 
 Typically, list information is nicely ordered, however printing is really verbose.
-Therefore, we can gather the list into a so-called spectral tibble (`spc_tbl`).
+Therefore, we can gather the list into a so-called spectral tibble (`spc_tbl`; data.frame extension).
 
 ```{r}
-# Gather from list into tibble data.frame
 (spc_tbl <- 
   spc_list %>%
   gather_spc())
@@ -154,6 +141,17 @@ spc_proc <-
 colnames(spc_proc)
 ```
 
+After preprocessing, we can fuse the the final reference analysis data:
+
+```{r}
+# see data/reference-data/metadata_soilchem_yamsys.txt for further details
+reference_data <- fread(
+  file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
+  as_tibble()
+# number of rows and columns
+dim(reference_data); colnames(reference_data)
+```
+
 We can explore the final processed spectra.
 
 ```{r}
@@ -186,17 +184,19 @@ spc_refdata <-
     x = spc_proc,
     y = reference_data %>% rename(sample_id = sample_ID)
   )
-# spc_refdata %>%
-#   skimr::skim(starts_with("spc"))
+```
+
+```{r, fig.show='hide'}
+pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
+  evaluation_method = "resampling", print = FALSE)
 ```
 
 ```{r}
-pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
-  evaluation_method = "resampling", print = FALSE)
 pls_carbon$p_model +
   xlab(expression(paste("Measured C [g", ~kg^-1))) +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
+
 
 
 # Outro

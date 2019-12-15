@@ -39,8 +39,8 @@ spectroscopy applications that share common tasks.
 
 # Prepare the R environment for spectral analysis
 
-Enough of the personal talking, let’s start. To reproduce the entire
-analysis in this hands-on, I would advise two main procedures:
+Enough of the talking, let’s start. To reproduce the entire analysis in
+this hands-on, I would advise two main procedures:
 
 1.  Installing exact package versions and sources using the renv package
     and the snapshot file `renv.lock`
@@ -68,8 +68,11 @@ more manual care and less guarantees, you can run the following lines:
 ## Option 2 for installation
 pkgs <- c("simplerspec", "here", "tidyverse", "data.table",
   "future", "doFuture", "remotes")
-# install.packages(pkgs)
-# remotes::install_github("philipp-baumann/simplerspec")}
+```
+
+``` r
+install.packages(pkgs)
+remotes::install_github("philipp-baumann/simplerspec")
 ```
 
 # Hands-on
@@ -107,37 +110,6 @@ in the form of a standardized function pipeline. This pipeline builds
 upon common design principles of spectral R objects which are shared
 between function inputs and outputs.
 
-``` r
-# Read final reference analysis data
-# see data/reference-data/metadata_soilchem_yamsys.txt for further details
-reference_data <- fread(
-  file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
-  as_tibble()
-# number of rows and columns
-dim(reference_data)
-```
-
-    ## [1] 94 36
-
-``` r
-reference_data[1:5, ]
-```
-
-    ## # A tibble: 5 x 36
-    ##   sample_ID country site  material     S     C     N ex_Ca ex_Mg  ex_K
-    ##   <chr>     <chr>   <chr> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1 BF_lo_01… BF      lo    soil      71.3  6.92 0.438  488   62.5 113  
-    ## 2 BF_lo_02… BF      lo    soil      87    5.73 0.447  656   47.5 140  
-    ## 3 BF_lo_03… BF      lo    soil      72.   3.41 0.233  270   21.9  61.6
-    ## 4 BF_lo_04… BF      lo    soil      73    5.37 0.423  532.  49.5 110. 
-    ## 5 BF_lo_05… BF      lo    soil      70    9.03 0.624  604   92.6 115  
-    ## # … with 26 more variables: ex_Al <dbl>, ex_Na <dbl>, ex_Fe <dbl>,
-    ## #   ex_Mn <dbl>, pH_BaCl2 <dbl>, CEC_eff <dbl>, BS_eff <dbl>, pH <dbl>,
-    ## #   P_resin <dbl>, Fe_tot <dbl>, Si_tot <dbl>, Al_tot <dbl>, P_tot <dbl>,
-    ## #   K_tot <dbl>, Ca_tot <dbl>, Mn_tot <dbl>, Zn_tot <dbl>, Cu_tot <dbl>,
-    ## #   Zn_DTPA <dbl>, Cu_DTPA <dbl>, Fe_DTPA <dbl>, Mn_DTPA <dbl>,
-    ## #   sand <dbl>, clay <dbl>, silt <dbl>, site_comb <chr>
-
 First, you may want to read files from spectra that you measured on your
 spectrometer. Spectral inputting is the first step done when doing
 spectral analysis prior to the standard chemical analysis. This is
@@ -160,8 +132,6 @@ registerDoFuture()
 # files to read
 files_spc <- list.files(
   here("data", "spectra", "example-yamsys"), full.names = TRUE)
-# path to one example file
-# files_spc[[1]]
 # read the files
 suppressMessages(
   spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"),
@@ -183,10 +153,9 @@ names(spc_list[[1]])
 
 Typically, list information is nicely ordered, however printing is
 really verbose. Therefore, we can gather the list into a so-called
-spectral tibble (`spc_tbl`).
+spectral tibble (`spc_tbl`; data.frame extension).
 
 ``` r
-# Gather from list into tibble data.frame
 (spc_tbl <- 
   spc_list %>%
   gather_spc())
@@ -266,6 +235,29 @@ colnames(spc_proc)
     ##  [5] "spc"            "wavenumbers"    "spc_rs"         "wavenumbers_rs"
     ##  [9] "spc_mean"       "spc_pre"        "xvalues_pre"
 
+After preprocessing, we can fuse the the final reference analysis
+data:
+
+``` r
+# see data/reference-data/metadata_soilchem_yamsys.txt for further details
+reference_data <- fread(
+  file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
+  as_tibble()
+# number of rows and columns
+dim(reference_data); colnames(reference_data)
+```
+
+    ## [1] 94 36
+
+    ##  [1] "sample_ID" "country"   "site"      "material"  "S"        
+    ##  [6] "C"         "N"         "ex_Ca"     "ex_Mg"     "ex_K"     
+    ## [11] "ex_Al"     "ex_Na"     "ex_Fe"     "ex_Mn"     "pH_BaCl2" 
+    ## [16] "CEC_eff"   "BS_eff"    "pH"        "P_resin"   "Fe_tot"   
+    ## [21] "Si_tot"    "Al_tot"    "P_tot"     "K_tot"     "Ca_tot"   
+    ## [26] "Mn_tot"    "Zn_tot"    "Cu_tot"    "Zn_DTPA"   "Cu_DTPA"  
+    ## [31] "Fe_DTPA"   "Mn_DTPA"   "sand"      "clay"      "silt"     
+    ## [36] "site_comb"
+
 We can explore the final processed spectra.
 
 ``` r
@@ -284,7 +276,7 @@ spc_proc %>%
 
     ## Joining, by = "sample_id"
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 After preprocessing, we can proceed with selecting reference analytical
 samples based on Kennard-Stone.
@@ -295,7 +287,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- --> Lastly, we
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- --> Lastly, we
 develop a partial least squares (PLS) calibration model.
 
 ``` r
@@ -310,18 +302,11 @@ spc_refdata <-
     ## Joining, by = "sample_id"
 
 ``` r
-# spc_refdata %>%
-#   skimr::skim(starts_with("spc"))
-```
-
-``` r
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
   evaluation_method = "resampling", print = FALSE)
 ```
 
     ## Adding missing grouping variables: `sample_id`
-
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ``` r
 pls_carbon$p_model +
@@ -329,7 +314,7 @@ pls_carbon$p_model +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 # Outro
 
