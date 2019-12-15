@@ -18,9 +18,8 @@ R, statistics, soils, and their interplay with plants, I started my
 first scientific journey with the premise that I just had to deepen a
 bit my R knowledge.
 
-Being a big fan of R and other open source tools, I was happy to find
-quite a bit of chemometrics and other modeling toolsets during my MSc.
-Many of them are for example available via
+There is a plethora of chemometrics and other modeling toolsets, and
+many of them are for example available via
 [CRAN](https://cran.r-project.org/) and listed in the CRAN Task View
 [Chemometrics and Computational
 Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine
@@ -32,10 +31,11 @@ for spectral processing and modeling. While doing first analysis steps,
 my intuition told me that streamlining all analysis steps would aid in
 more efficiently estimating the composition and properties of natural
 materials. More importantly, it would allow a sustainable basis for
-model development and sharing with collaborators by reducing repetitive
-boilerplate code. Henceforth, I started continously building
-simplerspec. The package aims to provide a rapid prototyping pipeline
-for various spectroscopy applications that share common tasks.
+model development and sharing with collaborators by simplifying
+repetitive boilerplate code. This was the motivation when I started
+continuously building simplerspec. The package aims to provide a rapid
+prototyping pipeline for various spectroscopy applications that share
+common tasks.
 
 # Hands-on
 
@@ -62,8 +62,7 @@ isolated project library.
 
 ``` r
 ## Option 1 for installation
-install.packages("renv")
-renv::restore("renv.lock")
+install.packages("renv"); renv::restore("renv.lock")
 ```
 
 Option 2 below should also work, however comes without guarantee of
