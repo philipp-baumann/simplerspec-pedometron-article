@@ -20,9 +20,9 @@ bit my R knowledge. I thought that the tools out there are simple enough
 for achieving my neat MSc task.
 
 Being a big fan of R and other open source tools, I was happy to find
-quite a bit of chemometrics and other modeling toolsets, many of them
-for example available via [CRAN](https://cran.r-project.org/) and listed
-in the CRAN Task View [Chemometrics and Computational
+quite a bit of chemometrics and other modeling toolsets. Many of them
+are for example available via [CRAN](https://cran.r-project.org/) and
+listed in the CRAN Task View [Chemometrics and Computational
 Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine
 Learning & Statistical
 Learning](https://cran.r-project.org/web/views/MachineLearning.html). I
@@ -32,18 +32,10 @@ for spectral processing and modeling. While doing first analysis steps,
 my intuition told me that streamlining all analysis steps would aid in
 more efficiently estimating the composition and properties of natural
 materials. More importantly, it would allow a sustainable basis for
-model development and sharing with collaborators.
-
-However, I was far from being there (now still). Soon I realized that
-while extending explorations of various options along modeling steps,
-such as pre-processing to achieve robust and accurate models, I ended up
-writing more and more verbose code for repetitive or only slighly
-different tasks. I felt I could do better at some point and get rid of
-the verbose boilerplate coding I was doing. To solve this more
-elegantly, I started continously building the simplerspec package with
-the goal of delivering beginner-friendly and standardized functions. In
-short, to provide a rapid prototyping pipeline for various spectroscopy
-applications that share common tasks.
+model development and sharing with collaborators by reducing repetitive
+boilerplate code. Henceforth, I started continously building
+simplerspec, to provide a rapid prototyping pipeline for various
+spectroscopy applications that share common tasks.
 
 # Prepare the R environment for spectral analysis
 
