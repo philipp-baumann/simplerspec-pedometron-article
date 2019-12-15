@@ -191,17 +191,6 @@
       "Repository": "CRAN",
       "Hash": "b174d35f8cfb40b0c0b66d2bb0bc4224"
     },
-    "remotes": {
-      "Package": "remotes",
-      "Version": "2.1.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "RemoteType": "standard",
-      "RemoteRef": "remotes",
-      "RemoteRepos": "https://cloud.r-project.org",
-      "RemoteSha": "2.1.0",
-      "Hash": "830aa73278dce9beba583bfe57a5c015"
-    },
     "renv": {
       "Package": "renv",
       "Version": "0.7.0-111",
@@ -223,10 +212,10 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "1.13",
+      "Version": "2.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "d91e5ea62ea410cd5c04e1be6a7c273d"
+      "Hash": "d643959bd36a4bdd63d0c490e20a12ed"
     },
     "stringi": {
       "Package": "stringi",
