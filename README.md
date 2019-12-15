@@ -39,17 +39,27 @@ spectroscopy applications that share common tasks.
 
 # Prepare the R environment for spectral analysis
 
-Enough of the talking, let’s start. To reproduce the entire analysis in
-this hands-on, I would advise two main procedures:
+Enough of the talking, let’s start. First, clone this repository to your
+local computer to reproduce the entire analysis in this hands-on. You
+can download a compressed archive manually, or use git to clone from
+this
+website:
+
+``` bash
+git clone https://github.com/philipp-baumann/simplerspec-pedometron-article.git
+```
+
+For the installation of packages I would advise two main procedures:
 
 1.  Installing exact package versions and sources using the renv package
     and the snapshot file `renv.lock`
 2.  Manual installation of R packages with specific version tags
 
-To restore and reproduce this entire analysis and document, first clone
-this repository to your local computer. Then install renv and restore R
-packages based on the `renv.lock` file in an isolated project library in
-two lines of code.
+Option 1 is probably the easiest as it makes automatically sure that all
+dependencies are met and the computational environment is the same
+(apart from operating system and system tools). For this, install renv
+and restore simplerspec and remaining R packages based on the
+`renv.lock` file in an isolated project library in two lines of code.
 
 ``` r
 ## Option 1 for installation
@@ -57,12 +67,8 @@ install.packages("renv")
 renv::restore("renv.lock")
 ```
 
-Option 1 is probably the easiest as it makes automatically sure that all
-dependencies are met and the computational environment is the same
-(apart from operating system and system tools).
-
-To install and attach all required R packages used in this article with
-more manual care and less guarantees, you can run the following lines:
+Option 2 below should also work, however comes without guarantee of
+identical package versions.
 
 ``` r
 ## Option 2 for installation
@@ -80,11 +86,11 @@ remotes::install_github("philipp-baumann/simplerspec")
 Now we are ready to proceed to the fundamentals of the package. We use
 the example data set from my MSc thesis. First, let’s load required
 packages. The tidyverse is optional, so if you feel it is not required
-you won’t need to load it.
+you won’t need to load
+it.
 
 ``` r
-# Load required packages
-# `walk()` is like `lapply()`, but returns invisibly
+# Load required packages; `walk()` is like `lapply()`, but returns invisibly
 suppressPackageStartupMessages(
   purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
 )
@@ -120,11 +126,11 @@ samples only with infrared spectroscopy.
 Here we read from a Bruker Alpha mid-Infrared spectrometer. Currently,
 the package is limited to Bruker and ASD devices, however support for
 reading files from other devices and formats is planned within the
-package simplerspec.io.
+package
+simplerspec.io.
 
 ``` r
-# multicore would work on UNIX/Darwin, however not supported for RStudio
-# and the future package due to stability reasons
+# multicore futures are not supported when using RStudio (stability reasons)
 plan(multisession)
 registerDoFuture()
 # availableCores()
@@ -204,7 +210,7 @@ spc_tbl %>%
   )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 The spectral pre-processing pipeline of simplerspec comprises basic
 steps that are often performed for spectral modeling and estimation.
@@ -276,7 +282,7 @@ spc_proc %>%
 
     ## Joining, by = "sample_id"
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 After preprocessing, we can proceed with selecting reference analytical
 samples based on Kennard-Stone.
@@ -287,7 +293,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- --> Lastly, we
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- --> Lastly, we
 develop a partial least squares (PLS) calibration model.
 
 ``` r
@@ -314,7 +320,7 @@ pls_carbon$p_model +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 # Outro
 

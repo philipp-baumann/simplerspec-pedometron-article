@@ -3,7 +3,7 @@ title: "Article"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-01"
 output: 
-  github_document
+  pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -19,13 +19,19 @@ Being a big fan of R and other open source tools, I was happy to find quite a bi
 
 # Prepare the R environment for spectral analysis
 
-Enough of the talking, let's start. To reproduce the entire analysis in this hands-on, I would advise two main procedures:
+Enough of the talking, let's start. First, clone this repository to your local computer to reproduce the entire analysis in this hands-on. You can download a compressed archive manually, or use git to clone from this website:
+
+```{bash, eval=FALSE}
+git clone https://github.com/philipp-baumann/simplerspec-pedometron-article.git
+```
+
+For the installation of packages I would advise two main procedures:
 
 1. Installing exact package versions and sources using the renv package and the snapshot file `renv.lock`
 2. Manual installation of R packages with specific version tags
 
 
-To restore and reproduce this entire analysis and document, first clone this repository to your local computer. Then install renv and restore R packages based on the `renv.lock` file in an isolated project library in two lines of code.
+Option 1 is probably the easiest as it makes automatically sure that all dependencies are met and the computational environment is the same (apart from operating system and system tools). For this, install renv and restore simplerspec and remaining R packages based on the `renv.lock` file in an isolated project library in two lines of code.
 
 ```{r, eval=FALSE}
 ## Option 1 for installation
@@ -33,9 +39,7 @@ install.packages("renv")
 renv::restore("renv.lock")
 ```
 
-Option 1 is probably the easiest as it makes automatically sure that all dependencies are met and the computational environment is the same (apart from operating system and system tools).
-
-To install and attach all required R packages used in this article with more manual care and less guarantees, you can run the following lines:
+Option 2 below should also work, however comes without guarantee of identical package versions.
 
 ```{r}
 ## Option 2 for installation
@@ -49,11 +53,10 @@ remotes::install_github("philipp-baumann/simplerspec")
 
 # Hands-on
 
-Now we are ready to proceed to the fundamentals of the package. We use the example data set from my MSc thesis. First, let's load required packages. The tidyverse is optional, so if you feel it is not required you won't need to load it.
+Now we are ready to proceed to the fundamentals of the package. We use the example data set from my MSc thesis. First, let's load required packages.
 
 ```{r}
-# Load required packages
-# `walk()` is like `lapply()`, but returns invisibly
+# Load required packages; `walk()` is like `lapply()`, but returns invisibly
 suppressPackageStartupMessages(
   purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
 )
