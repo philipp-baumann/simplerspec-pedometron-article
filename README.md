@@ -18,24 +18,19 @@ R, statistics, soils, and their interplay with plants, I started my
 first scientific journey with the premise that I just had to deepen a
 bit my R knowledge.
 
-There is a plethora of chemometrics and other modeling toolsets, and
-many of them are for example available via
-[CRAN](https://cran.r-project.org/) and listed in the CRAN Task View
-[Chemometrics and Computational
-Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine
-Learning & Statistical
-Learning](https://cran.r-project.org/web/views/MachineLearning.html).
-Most of them are good at solving single tasks, but I somehow missed a
-clean common interface that interlinked the key steps required for
-spectral processing and modeling. While doing first analysis steps, my
-intuition told me that streamlining all analysis steps would aid in more
-efficiently estimating the composition and properties of natural
-materials. More importantly, it would allow a sustainable basis for
-model development and sharing with collaborators by simplifying
-repetitive boilerplate code. This was the motivation when I started
-continuously building simplerspec. The package aims to provide a rapid
-prototyping pipeline for various spectroscopy applications that share
-common tasks.
+There is a plethora of chemometrics and other statistical learning
+toolboxes, and many of them are for example available via
+[CRAN](https://cran.r-project.org/). Most of them are good at solving
+single tasks, but I somehow missed a clean common interface that
+interlinked the key steps required for spectral processing and modeling.
+While doing first analysis steps, my intuition told me that streamlining
+all analysis steps would aid in more efficiently estimating the
+composition and properties of natural materials. More importantly, it
+would allow a sustainable basis for model development and sharing with
+collaborators by simplifying repetitive boilerplate code. This was the
+motivation when I started continuously building simplerspec. The package
+aims to provide a rapid prototyping pipeline for various spectroscopy
+applications that share common tasks.
 
 # Hands-on
 
@@ -50,22 +45,16 @@ git clone https://github.com/philipp-baumann/simplerspec-pedometron-article.git
 ```
 
 For the installation of packages I would advise one of the two main
-procedures:
-
-1.  Installing exact package versions and sources using the renv package
-    and the snapshot file `renv.lock`
-2.  Manual installation of R packages with specific version tags
-
-Procedure 1 installs renv, which is then used restore simplerspec and
-remaining R packages versions as described `renv.lock` file in an
-isolated project library.
+procedures. Procedure one installs renv, which is then used restore
+simplerspec and remaining R packages versions as described `renv.lock`
+file in an isolated project library.
 
 ``` r
 ## Option 1 for installation
 install.packages("renv"); renv::restore("renv.lock")
 ```
 
-Option 2 below should also work, however comes without guarantee of
+Procedure two below should also work, however comes without guarantee of
 identical package versions.
 
 ``` r
@@ -79,7 +68,7 @@ install.packages(pkgs)
 remotes::install_github("philipp-baumann/simplerspec")
 ```
 
-Now we are ready to proceed to the fundamentals of the package. We use
+Now we are ready to dive into to the fundamentals of the package. We use
 the example data set from my MSc thesis. First, let’s load required
 packages.
 
@@ -106,14 +95,12 @@ components:
         established models.
 
 Simplerspec focuses on the key tasks and provides user-friendly modules
-in the form of a standardized function pipeline. This pipeline builds on
-functions that are pipeable with a first argument that requires a
-standardized spectral object. The spectral processing pipeline comprises
-basic steps that are often performed for spectral modeling and
-estimation, covering steps 2 to 5 of the above listed common
-spectroscopy components. Simplerspec uses prospectr for key steps and
-data.table for simple operations. The following scheme summarizes the
-spectral processing steps.
+in the form of a standardized function pipeline. The spectral processing
+pipeline comprises basic steps that are often performed for spectral
+modeling and estimation, covering steps 2 to 5 of the above listed
+common spectroscopy components. Simplerspec uses prospectr for key steps
+and data.table for simple operations. The following scheme summarizes
+the spectral processing steps.
 
 ![](img/simplerspec-read-proc-tibble.png)<!-- -->
 
