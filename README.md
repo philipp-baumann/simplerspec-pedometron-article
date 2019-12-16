@@ -24,12 +24,12 @@ many of them are for example available via
 [Chemometrics and Computational
 Physics](https://cran.r-project.org/web/views/ChemPhys.html) or [Machine
 Learning & Statistical
-Learning](https://cran.r-project.org/web/views/MachineLearning.html). I
-would consider most of them good at solving single tasks, but I somehow
-missed a clean common interface that interlinked the key steps required
-for spectral processing and modeling. While doing first analysis steps,
-my intuition told me that streamlining all analysis steps would aid in
-more efficiently estimating the composition and properties of natural
+Learning](https://cran.r-project.org/web/views/MachineLearning.html).
+Most of them are good at solving single tasks, but I somehow missed a
+clean common interface that interlinked the key steps required for
+spectral processing and modeling. While doing first analysis steps, my
+intuition told me that streamlining all analysis steps would aid in more
+efficiently estimating the composition and properties of natural
 materials. More importantly, it would allow a sustainable basis for
 model development and sharing with collaborators by simplifying
 repetitive boilerplate code. This was the motivation when I started
@@ -165,7 +165,7 @@ dim(spc_dt); class(spc_dt)
     ## [1] "data.table" "data.frame"
 
 In a nutshell, spectral data processing can be done in one pipeline.
-Resampling in this context refers to to creating a new a axis interval
+Resampling in this context refers to to creating a new x axis interval
 in spectra. Spectra are averaged because there are 3 replicate
 measurements for each soil sample. Preprocessing is done to reduce
 scattering and noise in spectra.
@@ -213,11 +213,7 @@ spc_refdata <-
 We can explore the final processed spectra.
 
 ``` r
-spc_proc %>%
-  inner_join(
-    x = .,
-    y = reference_data %>% rename(sample_id = sample_ID)
-  ) %>%
+spc_refdata %>%
   filter(site %in% c("lo", "mo")) %>% 
   plot_spc_ext(
     spc_tbl = .,
@@ -225,8 +221,6 @@ spc_proc %>%
     lcol_measure = "C",
     group_id = "site")
 ```
-
-    ## Joining, by = "sample_id"
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
