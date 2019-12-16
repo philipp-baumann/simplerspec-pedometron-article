@@ -3,7 +3,7 @@ title: "Article"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-01"
 output: 
-  word_document
+  github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -144,6 +144,8 @@ spc_refdata %>%
     group_id = "site")
 ```
 
+![](img/spc-refdata-plot.pdf)<!-- -->
+
 After preprocessing, we can proceed with selecting reference analytical samples based on Kennard-Stone.
 
 ```{r}
@@ -151,6 +153,8 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
+![](img/pca-selection.pdf)<!-- -->
+
 Lastly, we develop a partial least squares (PLS) calibration model.
 
 ```{r, fig.show='hide'}
@@ -164,6 +168,7 @@ pls_carbon$p_model +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
+![](img/pls-C-eval.pdf)<!-- -->
 
 
 # Outro

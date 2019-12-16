@@ -205,6 +205,8 @@ spc_refdata %>%
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
+![](img/spc-refdata-plot.pdf)<!-- -->
+
 After preprocessing, we can proceed with selecting reference analytical
 samples based on Kennard-Stone.
 
@@ -214,8 +216,10 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- --> Lastly, we
-develop a partial least squares (PLS) calibration model.
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](img/pca-selection.pdf)<!-- -->
+
+Lastly, we develop a partial least squares (PLS) calibration model.
 
 ``` r
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
@@ -229,6 +233,8 @@ pls_carbon$p_model +
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+![](img/pls-C-eval.pdf)<!-- -->
 
 # Outro
 
