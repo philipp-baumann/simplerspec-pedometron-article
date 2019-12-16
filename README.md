@@ -106,11 +106,12 @@ components:
         established models.
 
 Simplerspec focuses on the key tasks and provides user-friendly modules
-in the form of a standardized function pipeline. This pipeline builds
-upon common design principles of spectral R objects which are shared
-between function inputs and outputs. The spectral pre-processing
-pipeline comprises basic steps that are often performed for spectral
-modeling and estimation. Simplerspec uses prospectr for key steps and
+in the form of a standardized function pipeline. This pipeline builds on
+functions that are pipeable with a first argument that requires a
+standardized spectral object. The spectral processing pipeline comprises
+basic steps that are often performed for spectral modeling and
+estimation, covering steps 2 to 5 of the above listed common
+spectroscopy components. Simplerspec uses prospectr for key steps and
 data.table for simple operations. The following scheme summarizes the
 spectral processing steps.
 
@@ -138,44 +139,16 @@ suppressMessages(
   spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"),
     parallel = TRUE)
 )
-length(spc_list)
 ```
-
-    ## [1] 284
-
-``` r
-names(spc_list[[1]])
-```
-
-    ##  [1] "metadata"          "spc"               "spc_nocomp"       
-    ##  [4] "sc_sm"             "sc_rf"             "ig_sm"            
-    ##  [7] "ig_rf"             "wavenumbers"       "wavenumbers_sc_sm"
-    ## [10] "wavenumbers_sc_rf"
 
 Typically, list information is nicely ordered, however printing is
-really verbose. Therefore, we can gather the list into a so-called
-spectral tibble (`spc_tbl`; data.frame extension).
+really verbose (see the spectral processing scheme for details).
+Therefore, we can gather the list into a so-called spectral tibble
+(`spc_tbl`; data.frame extension).
 
 ``` r
-(spc_tbl <- 
-  spc_list %>%
-  gather_spc())
+spc_tbl <- gather_spc(data = spc_list)
 ```
-
-    ## # A tibble: 284 x 6
-    ##    unique_id        file_id    sample_id   metadata   spc       wavenumbers
-    ##    <chr>            <chr>      <chr>       <named li> <named l> <named lis>
-    ##  1 BF_lo_01_soil_c… BF_lo_01_… BF_lo_01_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  2 BF_lo_01_soil_c… BF_lo_01_… BF_lo_01_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  3 BF_lo_01_soil_c… BF_lo_01_… BF_lo_01_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  4 BF_lo_02_soil_c… BF_lo_02_… BF_lo_02_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  5 BF_lo_02_soil_c… BF_lo_02_… BF_lo_02_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  6 BF_lo_02_soil_c… BF_lo_02_… BF_lo_02_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  7 BF_lo_03_soil_c… BF_lo_03_… BF_lo_03_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  8 BF_lo_03_soil_c… BF_lo_03_… BF_lo_03_s… <tibble [… <df[,171… <dbl [1,71…
-    ##  9 BF_lo_03_soil_c… BF_lo_03_… BF_lo_03_s… <tibble [… <df[,171… <dbl [1,71…
-    ## 10 BF_lo_04_soil_c… BF_lo_04_… BF_lo_04_s… <tibble [… <df[,171… <dbl [1,71…
-    ## # … with 274 more rows
 
 Instead of appending a matrix of spectra as a single column in a
 data.frame, spectra in a spectral tibble form a list-column. A
@@ -222,19 +195,20 @@ reference_data <- fread(
   file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
   as_tibble()
 # number of rows and columns
-dim(reference_data); colnames(reference_data)
+dim(reference_data)
 ```
 
     ## [1] 94 36
 
-    ##  [1] "sample_ID" "country"   "site"      "material"  "S"        
-    ##  [6] "C"         "N"         "ex_Ca"     "ex_Mg"     "ex_K"     
-    ## [11] "ex_Al"     "ex_Na"     "ex_Fe"     "ex_Mn"     "pH_BaCl2" 
-    ## [16] "CEC_eff"   "BS_eff"    "pH"        "P_resin"   "Fe_tot"   
-    ## [21] "Si_tot"    "Al_tot"    "P_tot"     "K_tot"     "Ca_tot"   
-    ## [26] "Mn_tot"    "Zn_tot"    "Cu_tot"    "Zn_DTPA"   "Cu_DTPA"  
-    ## [31] "Fe_DTPA"   "Mn_DTPA"   "sand"      "clay"      "silt"     
-    ## [36] "site_comb"
+``` r
+# Fuse spectra and reference data by `sample_id`
+spc_refdata <- 
+  inner_join(
+    x = spc_proc,
+    y = reference_data %>% rename(sample_id = sample_ID),
+    by = "sample_id"
+  )
+```
 
 We can explore the final processed spectra.
 
@@ -254,7 +228,7 @@ spc_proc %>%
 
     ## Joining, by = "sample_id"
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 After preprocessing, we can proceed with selecting reference analytical
 samples based on Kennard-Stone.
@@ -265,19 +239,8 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- --> Lastly, we
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- --> Lastly, we
 develop a partial least squares (PLS) calibration model.
-
-``` r
-# Fuse spectra and reference data
-spc_refdata <- 
-  dplyr::inner_join(
-    x = spc_proc,
-    y = reference_data %>% rename(sample_id = sample_ID)
-  )
-```
-
-    ## Joining, by = "sample_id"
 
 ``` r
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,

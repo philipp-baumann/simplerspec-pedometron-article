@@ -61,14 +61,14 @@ suppressPackageStartupMessages(
 A typical simple spectroscopy modeling project has the following components:
 
 1. Soil sampling and sample preparation
-3. Spectral measurements
-4. Selection of calibration samples
-5. Soil analytical reference analyses
-6. 
+2. Spectral measurements
+3. Selection of calibration samples
+4. Soil analytical reference analyses
+5. 
     a. Calibration or Recalibration
     b. Estimation of properties of new soils based on new spectra and established models.
 
-Simplerspec focuses on the key tasks and provides user-friendly modules in the form of a standardized function pipeline. This pipeline builds upon common design principles of spectral R objects which are shared between function inputs and outputs. The spectral pre-processing pipeline comprises basic steps that are often performed for spectral modeling and estimation. Simplerspec uses prospectr for key steps and data.table for simple operations. The following scheme summarizes the spectral processing steps.
+Simplerspec focuses on the key tasks and provides user-friendly modules in the form of a standardized function pipeline. This pipeline builds on functions that are pipeable with a first argument that requires a standardized spectral object. The spectral processing pipeline comprises basic steps that are often performed for spectral modeling and estimation, covering steps 2 to 5 of the above listed common spectroscopy components. Simplerspec uses prospectr for key steps and data.table for simple operations. The following scheme summarizes the spectral processing steps.
 
 ![](img/simplerspec-read-proc-tibble.png)<!-- -->
 
@@ -88,17 +88,13 @@ suppressMessages(
   spc_list <- read_opus_univ(fnames = files_spc, extract = c("spc"),
     parallel = TRUE)
 )
-length(spc_list)
-names(spc_list[[1]])
 ```
 
-Typically, list information is nicely ordered, however printing is really verbose.
+Typically, list information is nicely ordered, however printing is really verbose (see the spectral processing scheme for details).
 Therefore, we can gather the list into a so-called spectral tibble (`spc_tbl`; data.frame extension).
 
 ```{r}
-(spc_tbl <- 
-  spc_list %>%
-  gather_spc())
+spc_tbl <- gather_spc(data = spc_list)
 ```
 
 Instead of appending a matrix of spectra as a single column in a data.frame, spectra in a spectral tibble form a list-column. A list-column is basically a column consisting of a list instead of an atomic vector. With this we can extract this list column of spectra.
@@ -130,7 +126,17 @@ reference_data <- fread(
   file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
   as_tibble()
 # number of rows and columns
-dim(reference_data); colnames(reference_data)
+dim(reference_data)
+```
+
+```{r}
+# Fuse spectra and reference data by `sample_id`
+spc_refdata <- 
+  inner_join(
+    x = spc_proc,
+    y = reference_data %>% rename(sample_id = sample_ID),
+    by = "sample_id"
+  )
 ```
 
 We can explore the final processed spectra.
@@ -156,16 +162,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
-Lastly, we develop a partial least squares (PLS) calibration model. 
-
-```{r}
-# Fuse spectra and reference data
-spc_refdata <- 
-  dplyr::inner_join(
-    x = spc_proc,
-    y = reference_data %>% rename(sample_id = sample_ID)
-  )
-```
+Lastly, we develop a partial least squares (PLS) calibration model.
 
 ```{r, fig.show='hide'}
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
