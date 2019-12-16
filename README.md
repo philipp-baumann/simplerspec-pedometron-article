@@ -164,14 +164,8 @@ spc_proc <-
   average_spc(by = "sample_id") %>%
   preprocess_spc(select = "sg_1_w21") %>%
   group_by(sample_id) %>%
-  slice(1L)
-
-colnames(spc_proc)
+  slice(1L) # remove replicate spectra (averaged)
 ```
-
-    ##  [1] "unique_id"      "file_id"        "sample_id"      "metadata"      
-    ##  [5] "spc"            "wavenumbers"    "spc_rs"         "wavenumbers_rs"
-    ##  [9] "spc_mean"       "spc_pre"        "xvalues_pre"
 
 After preprocessing, we can fuse the the final reference analysis
 data:
