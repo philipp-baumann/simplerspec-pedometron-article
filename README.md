@@ -228,8 +228,6 @@ pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
   evaluation_method = "resampling", print = FALSE)
 ```
 
-    ## Adding missing grouping variables: `sample_id`
-
 ``` r
 pls_carbon$p_model +
   xlab(expression(paste("Measured C [g", ~kg^-1))) +
@@ -244,11 +242,8 @@ Simplerspec are some first baby steps in spectral adventures. The
 package deals with simplifying standard tasks and now has mainly
 exploration and teaching purposes. As an example, the [Congo spectral
 platform](https://sae-interactive-data.ethz.ch/simplerspec.drc/) uses
-some of its functionality. It would be great to further develop
-streamlining packages which are good at doing single things. It would
-also be fantastic to co-develop a new set of programs that automatically
-tune spectral machine learning pipelines. Complex problems require
-targeted learning. For example, one could create a custom graph learner
-using mlr3 and a preprocessing wrapper targeted to spectral analysis, in
-connection with a proper database system. If you have ideas, just send
-me an email or interact via github.
+some of its functionality. Complex problems and professional
+spectroscopy applications require transfer learning and spectral feature
+engineering pipelines that tune automatically. If you have ideas to
+collaborate and develop new frameworks, just send me an email or
+interact via github.
