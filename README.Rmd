@@ -19,7 +19,7 @@ There is a plethora of chemometrics and other statistical learning toolboxes, an
 
 # Hands-on
 
-Enough of the talking, let's start. First, clone this repository to your local computer to reproduce the entire analysis in this hands-on. You can download a compressed archive manually, or use git to clone from this website:
+First, clone this repository to your local computer to reproduce the entire analysis in this hands-on. You can download a compressed archive manually, or use git to clone from this website:
 
 ```{bash, eval=FALSE}
 git clone https://github.com/philipp-baumann/simplerspec-pedometron-article.git
@@ -44,7 +44,7 @@ install.packages(pkgs)
 remotes::install_github("philipp-baumann/simplerspec")
 ```
 
-Now we are ready to dive into to the fundamentals of the package. We use the example data set from my MSc thesis. First, let's load required packages.
+We use the example data set from my MSc thesis. First, let's load required packages.
 
 ```{r}
 # Package detection with "apply type" package load is not yet supported in renv

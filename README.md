@@ -32,10 +32,9 @@ applications that share common tasks.
 
 # Hands-on
 
-Enough of the talking, let’s start. First, clone this repository to your
-local computer to reproduce the entire analysis in this hands-on. You
-can download a compressed archive manually, or use git to clone from
-this
+First, clone this repository to your local computer to reproduce the
+entire analysis in this hands-on. You can download a compressed archive
+manually, or use git to clone from this
 website:
 
 ``` bash
@@ -66,8 +65,8 @@ install.packages(pkgs)
 remotes::install_github("philipp-baumann/simplerspec")
 ```
 
-Now we are ready to dive into to the fundamentals of the package. We use
-the example data set from my MSc thesis. First, let’s load required
+We use the example data set from my MSc thesis. First, let’s load
+required
 packages.
 
 ``` r
