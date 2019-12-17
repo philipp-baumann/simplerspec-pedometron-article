@@ -134,7 +134,7 @@ spc_refdata <-
 
 We can explore the final processed spectra.
 
-```{r}
+```{r spc-refdata-plot}
 spc_refdata %>%
   filter(site %in% c("lo", "mo")) %>% 
   plot_spc_ext(
@@ -144,13 +144,6 @@ spc_refdata %>%
     group_id = "site")
 ```
 
-![](img/spc-refdata-plot.png){ width=35% }<!-- -->
-
-```{r fig.width=2, echo=FALSE}
-knitr::include_graphics(path = here("img", "spc-refdata-plot.png"))
-```
-
-
 After preprocessing, we can proceed with selecting reference analytical samples based on Kennard-Stone.
 
 ```{r}
@@ -158,7 +151,6 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
-![](img/pca-selection.png){ width=35% }<!-- -->
 
 Lastly, we develop a partial least squares (PLS) calibration model.
 
@@ -172,8 +164,6 @@ pls_carbon$p_model +
   xlab(expression(paste("Measured C [g", ~kg^-1))) +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
-
-![](img/pls-C-eval.png){ width=35% }<!-- -->
 
 
 # Outro
