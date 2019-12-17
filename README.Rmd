@@ -140,7 +140,7 @@ spc_refdata %>%
 
 After this, we can proceed with selecting reference analytical samples based on Kennard-Stone.
 
-```{r}
+```{r, fig.width=5}
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 # PCA biplot
 spc_tbl_selection$p_pca
@@ -153,7 +153,7 @@ pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
   evaluation_method = "resampling", print = FALSE)
 ```
 
-```{r}
+```{r, fig.width=3}
 pls_carbon$p_model +
   xlab(expression(paste("Measured C [g", ~kg^-1))) +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
