@@ -23,11 +23,9 @@ toolboxes, and many of them are for example available via
 [CRAN](https://cran.r-project.org/). Most of them are good at solving
 single tasks, but I somehow missed a clean common interface that
 interlinked the key steps required for spectral processing and modeling.
-While doing first analysis steps, my intuition told me that streamlining
-all analysis steps would aid in more efficiently estimating the
-composition and properties of natural materials. More importantly, it
-would allow a sustainable basis for model development and sharing with
-collaborators by simplifying repetitive boilerplate code. This was the
+Back then I thought streamlining all analysis tasks would produce a
+sustainable basis for model development and sharing with collaborators.
+In particular, simplifying repetitive boilerplate code was the
 motivation when I started continuously building simplerspec. The package
 aims to provide a rapid prototyping pipeline for various spectroscopy
 applications that share common tasks.
