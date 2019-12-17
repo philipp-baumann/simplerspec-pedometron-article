@@ -1,7 +1,7 @@
 Article
 ================
 Philipp Baumann | <philipp.baumann@usys.ethz.ch>
-2019-12-01
+2019-12-17
 
 # Intro
 
@@ -15,20 +15,20 @@ chance to sample and model both soils and yam plants from 20 fields in 4
 landscapes across the West African yam belt (see
 [here](http://yamsys.org) for details). Since I was both fascinated by
 R, statistics, soils, and their interplay with plants, I started my
-first scientific journey with the premise that I just had to deepen a
-bit my R knowledge.
+first scientific journey with the premise that I just had to deepen my R
+knowledge a bit.
 
 There is a plethora of chemometrics and other statistical learning
-toolboxes, and many of them are for example available via
-[CRAN](https://cran.r-project.org/). Most of them are good at solving
-single tasks, but I somehow missed a clean common interface that
-interlinked the key steps required for spectral processing and modeling.
-Back then I thought streamlining all analysis tasks would produce a
-sustainable basis for model development and sharing with collaborators.
-In particular, simplifying repetitive boilerplate code was the
-motivation when I started continuously building simplerspec. The package
-aims to provide a rapid prototyping pipeline for various spectroscopy
-applications that share common tasks.
+toolboxes, and many of them are available via
+[CRAN](https://cran.r-project.org/), for example. Most of them are good
+at solving single tasks, but I somehow missed a clean common interface
+that interlinked the key steps required for spectral processing and
+modeling. Back then I thought streamlining all analysis tasks would
+produce a sustainable basis for model development and sharing with
+collaborators. In particular, simplifying repetitive boilerplate code
+was the motivation when I started building simplerspec step by step. The
+package aims to provide a rapid prototyping pipeline for various
+spectroscopy applications that share common tasks.
 
 # Hands-on
 
@@ -42,9 +42,9 @@ git clone https://github.com/philipp-baumann/simplerspec-pedometron-article.git
 ```
 
 For the installation of packages I would advise one of the two main
-procedures. Procedure one installs renv, which is then used restore
-simplerspec and remaining R packages versions as described `renv.lock`
-file in an isolated project library.
+procedures. Procedure one installs renv, which is then used to restore
+simplerspec and remaining versions of R packages as described
+`renv.lock` file in an isolated project library.
 
 ``` r
 ## Option 1 for installation
@@ -103,7 +103,7 @@ summarizes the spectral processing steps.
 We assume that spectral measurements are done before chemical reference
 analyses as the former are faster and cheaper to do. Here we read the
 data from a Bruker Alpha mid-Infrared spectrometer. Currently, the
-package is limited to Bruker and ASD devices, however support for
+package is limited to Bruker and ASD devices. However, support for
 reading files from other devices and formats is planned within the
 package
 simplerspec.io.
@@ -138,10 +138,10 @@ data.frame, spectra are represented as a list of `data.table`s split by
 rows, also forming a column (list-column; see scheme above).
 
 In a nutshell, spectral data processing can be done in one pipeline.
-Resampling in this context refers to to creating a new x axis interval
-in spectra. Spectra are averaged because there are 3 replicate
-measurements for each soil sample. Preprocessing is done to reduce
-scattering and noise in spectra.
+Resampling in this context refers to creating a new X-axis interval in
+spectra. Spectra are averaged because there are 3 replicate measurements
+for each soil sample. Preprocessing is done to reduce scattering and
+noise in the spectra.
 
 ``` r
 spc_proc <- 
@@ -180,7 +180,7 @@ We can explore the final processed spectra.
 
 ``` r
 spc_refdata %>%
-  filter(site %in% c("lo", "mo")) %>% 
+  filter(site %in% c("lo", "mo")) %>% # two landscapes in Burkina Faso
   plot_spc_ext(
     spc_tbl = .,
     lcols_spc = c("spc", "spc_pre"),
@@ -190,8 +190,8 @@ spc_refdata %>%
 
 ![](README_files/figure-gfm/spc-refdata-plot-1.png)<!-- -->
 
-After this, we can proceed with selecting reference analytical samples
-based on Kennard-Stone.
+After this, we proceed with selecting reference analytical samples based
+on Kennard-Stone.
 
 ``` r
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
@@ -212,20 +212,24 @@ pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
 
 ``` r
 pls_carbon$p_model +
-  xlab(expression(paste("Measured C [g", ~kg^-1))) +
-  ylab(expression(paste("Predicted C [g", ~kg^-1)))
+  xlab(expression(paste("Measured C [g", ~kg^-1, "]"))) +
+  ylab(expression(paste("Predicted C [g", ~kg^-1, "]")))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 # Outro
 
-Simplerspec are some first baby steps in spectral adventures. The
-package deals with simplifying standard tasks and now has mainly
+The steps shown here using simplerspec are merely some first baby steps
+in a realm of possible spectral adventures. The package deals with
+simplifying standard tasks and is currently mainly focuses on
 exploration and teaching purposes. As an example, the [Congo spectral
 platform](https://sae-interactive-data.ethz.ch/simplerspec.drc/) uses
 some of its functionality. Complex problems and professional
-spectroscopy applications require transfer learning and spectral feature
-engineering pipelines that tune automatically. If you have ideas to
+spectroscopy applications require transfer learning (i.e., transferring
+knowledge from big spectral libraries into to new target set of soils)
+and spectral feature engineering (i.e., modifying spectra with
+operations that enable models to better discover predictor-response
+relationships) pipelines that tune automatically. If you have ideas to
 collaborate and develop new frameworks, just send me an email or
 interact via github.
