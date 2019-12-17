@@ -134,8 +134,8 @@ spc_tbl <- gather_spc(data = spc_list)
 ```
 
 Instead of appending a matrix of spectra as a single column in a
-data.frame, spectra are represented as a list of `data.table`s, also in
-a column (list-column; see scheme above).
+data.frame, spectra are represented as a list of `data.table`s split by
+rows, also forming a column (list-column; see scheme above).
 
 In a nutshell, spectral data processing can be done in one pipeline.
 Resampling in this context refers to to creating a new x axis interval
@@ -153,22 +153,21 @@ spc_proc <-
   slice(1L) # remove replicate spectra (averaged)
 ```
 
-After preprocessing, we can fuse the the final reference analysis
-data:
+After preprocessing, we can read the final reference analysis data and
+merge it with with the spectral
+tibble:
 
 ``` r
 # see data/reference-data/metadata_soilchem_yamsys.txt for further details
 reference_data <- fread(
   file = here("data", "reference-data", "soilchem_yamsys.csv")) %>%
   as_tibble()
-# number of rows and columns
-dim(reference_data)
+dim(reference_data) # number of rows and columns
 ```
 
     ## [1] 94 36
 
 ``` r
-# Fuse spectra and reference data by `sample_id`
 spc_refdata <- 
   inner_join(
     x = spc_proc,
