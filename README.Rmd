@@ -3,7 +3,7 @@ title: "Article"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-17"
 output: 
-  word_document
+  pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -142,6 +142,7 @@ After this, we proceed with selecting reference analytical samples based on Kenn
 
 ```{r, fig.width=5}
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
+spc_ref <- spc_tbl_selection$spc_ref
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
@@ -149,8 +150,9 @@ spc_tbl_selection$p_pca
 Lastly, we develop a partial least squares (PLS) calibration model, hypothetically assuming that we only have above selected 50% calibration data.
 
 ```{r, fig.show='hide'}
-pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
-  evaluation_method = "resampling", print = FALSE)
+pls_carbon <- fit_pls(
+  spec_chem = spc_refdata %>% filter(sample_id %in% spc_ref$sample_id), 
+  response = C, evaluation_method = "resampling", print = FALSE)
 ```
 
 ```{r, fig.width=3, fig.height=2.14}
@@ -158,6 +160,8 @@ pls_carbon$p_model +
   xlab(expression(paste("Measured C [g", ~kg^-1, "]"))) +
   ylab(expression(paste("Predicted C [g", ~kg^-1, "]")))
 ```
+
+What remains is the estimation of total C for the model prediction samples (component 5.ii) based on the model trained above (component 5.i) and the assessment thereof.
 
 
 # Outro
