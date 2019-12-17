@@ -144,7 +144,7 @@ spc_refdata %>%
     group_id = "site")
 ```
 
-![](img/spc-refdata-plot.png)<!-- -->
+![](img/spc-refdata-plot.png){ width=35% }<!-- -->
 
 After preprocessing, we can proceed with selecting reference analytical samples based on Kennard-Stone.
 
@@ -153,7 +153,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
-![](img/pca-selection.png)<!-- -->
+![](img/pca-selection.png){ width=35% }<!-- -->
 
 Lastly, we develop a partial least squares (PLS) calibration model.
 
@@ -168,7 +168,7 @@ pls_carbon$p_model +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
-![](img/pls-C-eval.png)<!-- -->
+![](img/pls-C-eval.png){ width=35% }<!-- -->
 
 
 # Outro

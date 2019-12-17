@@ -60,6 +60,8 @@ p_spc_refdata <-
 
 ggsave(filename = "spc-refdata-plot.pdf", plot = p_spc_refdata,
   path = here("img"), width = 7, height = 4)
+ggsave(filename = "spc-refdata-plot.png", plot = p_spc_refdata,
+  path = here("img"), width = 7, height = 4)
 
 # selecting reference analytical samples based on Kennard-Stone
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
@@ -67,6 +69,8 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 p_pca_selection <- spc_tbl_selection$p_pca
 
 ggsave(filename = "pca-selection.pdf", plot = p_pca_selection, 
+  path = here("img"), width = 5.5, height = 4)
+ggsave(filename = "pca-selection.png", plot = p_pca_selection, 
   path = here("img"), width = 5.5, height = 4)
 
 # develop a partial least squares (PLS) calibration model
@@ -79,4 +83,6 @@ p_pls_carbon <-
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 
 ggsave(filename = "pls-C-eval.pdf", plot = p_pls_carbon,
+  path = here("img"), width = 4, height = 4)
+ggsave(filename = "pls-C-eval.png", plot = p_pls_carbon,
   path = here("img"), width = 4, height = 4)
