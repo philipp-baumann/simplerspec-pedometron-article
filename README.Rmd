@@ -1,5 +1,5 @@
 ---
-title: "Article"
+title: "simplerspec: streamlining spectral data processing and modeling for spectroscopy applications"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-17"
 output: 
@@ -22,7 +22,9 @@ There is a plethora of chemometrics and other statistical learning toolboxes, an
 First, clone this repository to your local computer to reproduce the entire analysis in this hands-on. You can download a compressed archive manually, or use git to clone from this website:
 
 ```{bash, eval=FALSE}
+# command line option
 git clone https://github.com/philipp-baumann/simplerspec-pedometron-article.git
+# or via RStudio: see https://happygitwithr.com/rstudio-git-github.html
 ```
 
 For the installation of packages I would advise one of the two main procedures. Procedure one installs renv, which is then used to restore simplerspec and remaining versions of R packages as described `renv.lock` file in an isolated project library.
@@ -148,7 +150,7 @@ spc_pred <- spc_tbl_selection$spc_pred
 spc_tbl_selection$p_pca
 ```
 
-Lastly, we develop a partial least squares (PLS) calibration model, hypothetically assuming that we only have above selected 50% calibration data.
+Lastly, we develop a partial least squares (PLS) calibration model for total Carbon (C), hypothetically assuming that we only have above selected 50% calibration data.
 
 ```{r, fig.show='hide'}
 pls_carbon <- fit_pls(
@@ -176,4 +178,4 @@ assess_multimodels(
 
 # Outro
 
-The steps shown here using simplerspec are merely some first baby steps in a realm of possible spectral adventures. The package deals with simplifying standard tasks and is currently mainly focuses on exploration and teaching purposes. As an example, the [Congo spectral platform](https://sae-interactive-data.ethz.ch/simplerspec.drc/) uses some of its functionality. Complex problems and professional spectroscopy applications require transfer learning (i.e., transferring knowledge from big spectral libraries into to new target set of soils) and spectral feature engineering (i.e., modifying spectra with operations that enable models to better discover predictor-response relationships) pipelines that tune automatically. If you have ideas to collaborate and develop new frameworks, just send me an email or interact via github.
+The steps shown here using simplerspec are merely some first baby steps in a realm of possible spectral adventures. The package deals with simplifying standard tasks and currently mainly focuses on exploration and teaching purposes. As an example, the [Congo spectral platform](https://sae-interactive-data.ethz.ch/simplerspec.drc/) uses some of its functionality. Complex problems and professional spectroscopy applications require transfer learning (i.e., transferring knowledge from big spectral libraries into to new target set of soils) and spectral feature engineering (i.e., modifying spectra with operations that enable models to better discover predictor-response relationships) pipelines that tune automatically. If you have ideas to collaborate and develop new frameworks, just send me an email or interact via github.
