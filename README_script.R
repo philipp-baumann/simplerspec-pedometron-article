@@ -75,7 +75,8 @@ ggsave(filename = "pca-selection.pdf", plot = p_pca_selection,
 ggsave(filename = "pca-selection.png", plot = p_pca_selection, 
   path = here("img"), width = 5.5, height = 4)
 
-# develop a partial least squares (PLS) calibration model
+# develop a partial least squares regression (PLSR) calibration model
+# for total Carbon (C)
 pls_carbon <- fit_pls(
   spec_chem = spc_refdata %>% filter(sample_id %in% spc_ref$sample_id), 
   response = C, evaluation_method = "resampling", print = FALSE)
@@ -89,3 +90,11 @@ ggsave(filename = "pls-C-eval.pdf", plot = p_pls_carbon,
   path = here("img"), width = 4, height = 4)
 ggsave(filename = "pls-C-eval.png", plot = p_pls_carbon,
   path = here("img"), width = 4, height = 4)
+
+# Predict on 1/2 remaining samples based on calibrated PLSR model
+spc_ref_pred <- predict_from_spc(model_list = list("pls_carbon" = pls_carbon),
+                                 spc_tbl = spc_pred %>% filter(sample_id %in% spc_pred$sample_id))
+# Assess estimation of total C on prediction samples
+assess_multimodels(
+  data = spc_ref_pred %>% inner_join(spc_refdata %>% select(sample_id, C)),
+  C = vars(o = "C", p = "pls_carbon"), .metrics = c("simplerspec"))
