@@ -73,9 +73,10 @@ the example data set from my MSc thesis. First, let’s load required
 packages.
 
 ``` r
-# Load required packages; `walk()` is like `lapply()`, but returns invisibly
+# Package detection with "apply type" package load is not yet supported in renv
 suppressPackageStartupMessages(
-  purrr::walk(pkgs, library, character.only = TRUE, quietly = TRUE)
+  xfun::pkg_attach("simplerspec", "here", "tidyverse", "data.table",
+  "future", "doFuture", "remotes")
 )
 ```
 
