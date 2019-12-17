@@ -93,13 +93,11 @@ components:
     2.  Estimation of properties of new soils based on new spectra and
         established models.
 
-Simplerspec focuses on the key tasks and provides user-friendly modules
-in the form of a standardized function pipeline. The spectral processing
-pipeline comprises basic steps that are often performed for spectral
-modeling and estimation, covering steps 2 to 5 of the above listed
-common spectroscopy components. Simplerspec uses prospectr for key steps
-and data.table for simple operations. The following scheme summarizes
-the spectral processing steps.
+Simplerspec focuses on the key tasks in spectral modeling and estimation
+(components 2 to 5 above), and provides user-friendly modules in the
+form of a standardized function pipeline. Simplerspec uses prospectr for
+key steps and data.table for simple operations. The following scheme
+summarizes the spectral processing steps.
 
 ![](img/simplerspec-read-proc-tibble.png)<!-- -->
 
