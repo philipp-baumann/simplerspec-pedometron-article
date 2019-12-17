@@ -57,7 +57,7 @@ A typical simple spectroscopy modeling project has the following components:
 2.  Spectral measurements
 3.  Selection of calibration samples
 4.  Soil analytical reference analyses
-5.  1.  Calibration or Recalibration
+5.  1.  Calibration or recalibration
     2.  Estimation of properties of new soils based on new spectra and established models.
 
 Simplerspec focuses on the key tasks in spectral modeling and estimation (components 2 to 5 above), and provides user-friendly modules in the form of a standardized function pipeline. Simplerspec uses prospectr for key steps and data.table for simple operations. The following scheme summarizes the spectral processing steps.
@@ -102,7 +102,7 @@ spc_proc <-
   slice(1L) # remove replicate spectra (averaged)
 ```
 
-After preprocessing, we can read the final reference analysis data and merge it with with the spectral tibble:
+After preprocessing, we can read the final reference analysis data and merge it with the spectral tibble:
 
 ``` r
 # see data/reference-data/metadata_soilchem_yamsys.txt for further details
