@@ -138,7 +138,7 @@ spc_refdata %>%
     group_id = "site")
 ```
 
-After preprocessing, we can proceed with selecting reference analytical samples based on Kennard-Stone.
+After this, we can proceed with selecting reference analytical samples based on Kennard-Stone.
 
 ```{r}
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
@@ -146,7 +146,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-Lastly, we develop a partial least squares (PLS) calibration model.
+Lastly, we develop a partial least squares (PLS) calibration model, hypothetically assuming that we only have above selected 50% calibration data.
 
 ```{r, fig.show='hide'}
 pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
