@@ -137,18 +137,8 @@ spc_tbl <- gather_spc(data = spc_list)
 ```
 
 Instead of appending a matrix of spectra as a single column in a
-data.frame, spectra in a spectral tibble form a list-column. A
-list-column is basically a column consisting of a list instead of an
-atomic vector. With this we can extract this list column of spectra.
-
-``` r
-spc_dt <- data.table::rbindlist(spc_tbl$spc)
-dim(spc_dt); class(spc_dt)
-```
-
-    ## [1]  284 1716
-
-    ## [1] "data.table" "data.frame"
+data.frame, spectra are represented as a list of `data.table`s, also in
+a column (list-column; see scheme above).
 
 In a nutshell, spectral data processing can be done in one pipeline.
 Resampling in this context refers to to creating a new x axis interval
@@ -213,7 +203,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 Lastly, we develop a partial least squares (PLS) calibration model.
 
@@ -228,7 +218,7 @@ pls_carbon$p_model +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 # Outro
 
