@@ -65,6 +65,8 @@ ggsave(filename = "spc-refdata-plot.png", plot = p_spc_refdata,
 
 # selecting reference analytical samples based on Kennard-Stone
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
+spc_ref <- spc_tbl_selection$spc_ref
+spc_pred <- spc_tbl_selection$spc_pred
 # PCA biplot
 p_pca_selection <- spc_tbl_selection$p_pca
 
@@ -74,8 +76,9 @@ ggsave(filename = "pca-selection.png", plot = p_pca_selection,
   path = here("img"), width = 5.5, height = 4)
 
 # develop a partial least squares (PLS) calibration model
-pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
-  evaluation_method = "resampling", print = FALSE)
+pls_carbon <- fit_pls(
+  spec_chem = spc_refdata %>% filter(sample_id %in% spc_ref$sample_id), 
+  response = C, evaluation_method = "resampling", print = FALSE)
 
 p_pls_carbon <- 
   pls_carbon$p_model +

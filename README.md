@@ -196,6 +196,7 @@ on Kennard-Stone.
 ``` r
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_ref <- spc_tbl_selection$spc_ref
+spc_pred <- spc_tbl_selection$spc_pred
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
@@ -222,7 +223,26 @@ pls_carbon$p_model +
 
 What remains is the estimation of total C for the model prediction
 samples (component 5.ii) based on the model trained above (component
-5.i) and the assessment thereof.
+5.i) and the assessment
+thereof.
+
+``` r
+spc_ref_pred <- predict_from_spc(model_list = list("pls_carbon" = pls_carbon),
+  spc_tbl = spc_pred %>% filter(sample_id %in% spc_pred$sample_id))
+# Assess estimation of total C on prediction samples
+assess_multimodels(
+  data = spc_ref_pred %>% inner_join(spc_refdata %>% select(sample_id, C)),
+  C = vars(o = "C", p = "pls_carbon"), .metrics = c("simplerspec"))
+```
+
+    ## # A tibble: 1 x 27
+    ##   model     n   min   max  mean median  sdev    cv skewness_b1 kurtosis
+    ##   <chr> <int> <dbl> <dbl> <dbl>  <dbl> <dbl> <dbl>       <dbl>    <dbl>
+    ## 1 C        47     1  24.7  9.86   7.75  6.18 0.626       0.990  -0.0845
+    ## # … with 17 more variables: rmse <dbl>, mse <dbl>, me <dbl>, bias <dbl>,
+    ## #   msv <dbl>, sde <dbl>, mae <dbl>, r2 <dbl>, b <dbl>, rpd <dbl>,
+    ## #   rpiq <dbl>, SB <dbl>, NU <dbl>, LC <dbl>, SB_prop <dbl>,
+    ## #   NU_prop <dbl>, LC_prop <dbl>
 
 # Outro
 

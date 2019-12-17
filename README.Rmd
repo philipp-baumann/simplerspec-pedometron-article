@@ -143,6 +143,7 @@ After this, we proceed with selecting reference analytical samples based on Kenn
 ```{r, fig.width=5}
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_ref <- spc_tbl_selection$spc_ref
+spc_pred <- spc_tbl_selection$spc_pred
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
@@ -162,6 +163,15 @@ pls_carbon$p_model +
 ```
 
 What remains is the estimation of total C for the model prediction samples (component 5.ii) based on the model trained above (component 5.i) and the assessment thereof.
+
+```{r}
+spc_ref_pred <- predict_from_spc(model_list = list("pls_carbon" = pls_carbon),
+  spc_tbl = spc_pred %>% filter(sample_id %in% spc_pred$sample_id))
+# Assess estimation of total C on prediction samples
+assess_multimodels(
+  data = spc_ref_pred %>% inner_join(spc_refdata %>% select(sample_id, C)),
+  C = vars(o = "C", p = "pls_carbon"), .metrics = c("simplerspec"))
+```
 
 
 # Outro
