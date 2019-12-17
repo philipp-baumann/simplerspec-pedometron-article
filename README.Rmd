@@ -146,6 +146,11 @@ spc_refdata %>%
 
 ![](img/spc-refdata-plot.png){ width=35% }<!-- -->
 
+```{r fig.width=2, echo=FALSE}
+knitr::include_graphics(path = here("img", "spc-refdata-plot.png"))
+```
+
+
 After preprocessing, we can proceed with selecting reference analytical samples based on Kennard-Stone.
 
 ```{r}

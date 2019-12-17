@@ -207,6 +207,8 @@ spc_refdata %>%
 
 ![](img/spc-refdata-plot.png)<!-- -->
 
+![](/media/ssd/nas-ethz/doktorat/projects/04_communication/simplerspec-pedometron-article/img/spc-refdata-plot.png)<!-- -->
+
 After preprocessing, we can proceed with selecting reference analytical
 samples based on Kennard-Stone.
 
@@ -216,7 +218,7 @@ spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
 spc_tbl_selection$p_pca
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 ![](img/pca-selection.png)<!-- -->
 
 Lastly, we develop a partial least squares (PLS) calibration model.
@@ -232,7 +234,7 @@ pls_carbon$p_model +
   ylab(expression(paste("Predicted C [g", ~kg^-1)))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ![](img/pls-C-eval.png)<!-- -->
 
