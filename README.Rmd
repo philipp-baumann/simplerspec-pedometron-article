@@ -3,7 +3,7 @@ title: "Article"
 author: "Philipp Baumann | philipp.baumann@usys.ethz.ch"
 date: "2019-12-17"
 output: 
-  pdf_document
+  github_document
 ---
 
 ```{r setup, include=FALSE}

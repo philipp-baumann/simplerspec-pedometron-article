@@ -195,6 +195,7 @@ on Kennard-Stone.
 
 ``` r
 spc_tbl_selection <- select_ref_spc(spc_tbl = spc_proc, ratio_ref = 0.5)
+spc_ref <- spc_tbl_selection$spc_ref
 # PCA biplot
 spc_tbl_selection$p_pca
 ```
@@ -206,8 +207,9 @@ hypothetically assuming that we only have above selected 50% calibration
 data.
 
 ``` r
-pls_carbon <- fit_pls(spec_chem = spc_refdata, response = C,
-  evaluation_method = "resampling", print = FALSE)
+pls_carbon <- fit_pls(
+  spec_chem = spc_refdata %>% filter(sample_id %in% spc_ref$sample_id), 
+  response = C, evaluation_method = "resampling", print = FALSE)
 ```
 
 ``` r
@@ -217,6 +219,10 @@ pls_carbon$p_model +
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+What remains is the estimation of total C for the model prediction
+samples (component 5.ii) based on the model trained above (component
+5.i) and the assessment thereof.
 
 # Outro
 
